@@ -29,9 +29,5 @@
             <artifactId>mybatis-plus-core</artifactId>
             <version>${mybatis-plus-boot-starter.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
     </dependencies>
 </project>

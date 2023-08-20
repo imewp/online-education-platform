@@ -2,6 +2,7 @@ server:
   port: 63040
   servlet:
     context-path: /content
+
 spring:
   application:
     name: content-api
