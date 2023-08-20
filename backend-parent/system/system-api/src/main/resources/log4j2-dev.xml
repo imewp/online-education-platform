@@ -10,8 +10,8 @@
             <PatternLayout pattern="${PATTERN}"/>
         </Console>
 
-        <RollingFile name="ErrorAppender" fileName="${logdir}/content-error.log"
-                     filePattern="${logdir}/$${date:yyyy-MM-dd}/content-error.%d{yyyy-MM-dd-HH}.log" append="true">
+        <RollingFile name="ErrorAppender" fileName="${logdir}/system-error.log"
+                     filePattern="${logdir}/$${date:yyyy-MM-dd}/system-error.%d{yyyy-MM-dd-HH}.log" append="true">
             <PatternLayout pattern="${PATTERN}"/>
             <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
             <Policies>
@@ -19,8 +19,8 @@
             </Policies>
         </RollingFile>
 
-        <RollingFile name="DebugAppender" fileName="${logdir}/content-info.log"
-                     filePattern="${logdir}/$${date:yyyy-MM-dd}/content-info.%d{yyyy-MM-dd-HH}.log" append="true">
+        <RollingFile name="DebugAppender" fileName="${logdir}/system-info.log"
+                     filePattern="${logdir}/$${date:yyyy-MM-dd}/system-info.%d{yyyy-MM-dd-HH}.log" append="true">
             <PatternLayout pattern="${PATTERN}"/>
             <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
             <Policies>

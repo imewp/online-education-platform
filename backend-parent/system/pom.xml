@@ -9,12 +9,11 @@
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>content</artifactId>
+    <artifactId>system</artifactId>
     <packaging>pom</packaging>
-
     <modules>
-        <module>content-model</module>
-        <module>content-service</module>
-        <module>content-api</module>
+        <module>system-model</module>
+        <module>system-service</module>
+        <module>system-api</module>
     </modules>
 </project>

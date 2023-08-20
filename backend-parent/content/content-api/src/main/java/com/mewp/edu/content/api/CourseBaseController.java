@@ -4,6 +4,7 @@ import com.mewp.edu.common.model.PageResult;
 import com.mewp.edu.common.param.PageParams;
 import com.mewp.edu.content.model.dto.QueryCourseParamsDTO;
 import com.mewp.edu.content.model.po.CourseBase;
+import com.mewp.edu.content.service.CourseBaseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 
 /**
  * <p>
@@ -27,6 +30,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/course")
 public class CourseBaseController {
 
+    @Resource
+    private CourseBaseService courseBaseService;
+
     @ApiOperation("课程查询")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNo", value = "当前页码", paramType = "query", dataType = "long"),
@@ -34,8 +40,8 @@ public class CourseBaseController {
     })
     @PostMapping("/list")
     public PageResult<CourseBase> list(PageParams pageParams,
-                                       @RequestBody(required = false) QueryCourseParamsDTO queryCourseParamsDTO) {
-        return null;
+                                       @RequestBody(required = false) QueryCourseParamsDTO courseParamsDTO) {
+        return courseBaseService.queryCourseBasePageList(pageParams, courseParamsDTO);
     }
 
 }
