@@ -1,8 +1,7 @@
 package com.mewp.edu.content.mapper;
 
-import com.mewp.edu.content.model.po.CourseTeacher;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.springframework.stereotype.Repository;
+import com.mewp.edu.content.model.po.CourseTeacher;
 
 /**
  * <p>
