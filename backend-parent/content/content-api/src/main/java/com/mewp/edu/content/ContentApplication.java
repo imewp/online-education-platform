@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * @author mewp
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.mewp.edu.content", "com.mewp.edu.common"})
 public class ContentApplication {
 
     public static void main(String[] args) {

@@ -1,7 +1,10 @@
 package com.mewp.edu.content.api;
 
+import com.mewp.edu.common.exception.CustomException;
 import com.mewp.edu.common.model.PageResult;
 import com.mewp.edu.common.param.PageParams;
+import com.mewp.edu.content.model.dto.AddOrUpdateCourseDTO;
+import com.mewp.edu.content.model.dto.CourseBaseInfoDTO;
 import com.mewp.edu.content.model.dto.QueryCourseParamsDTO;
 import com.mewp.edu.content.model.po.CourseBase;
 import com.mewp.edu.content.service.CourseBaseService;
@@ -10,6 +13,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +46,14 @@ public class CourseBaseController {
     public PageResult<CourseBase> list(PageParams pageParams,
                                        @RequestBody(required = false) QueryCourseParamsDTO courseParamsDTO) {
         return courseBaseService.queryCourseBasePageList(pageParams, courseParamsDTO);
+    }
+
+    @ApiOperation("新增课程基础信息")
+    @PostMapping("/")
+    public CourseBaseInfoDTO createCourseBase(@Validated @RequestBody AddOrUpdateCourseDTO courseDTO) {
+        //todo：机构ID 暂时使用硬编码
+        Long companyId = 1232141425L;
+        return courseBaseService.createCourseBase(companyId, courseDTO);
     }
 
 }

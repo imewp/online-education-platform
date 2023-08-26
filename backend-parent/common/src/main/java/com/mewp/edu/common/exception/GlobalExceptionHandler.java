@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
         ArrayList<String> msgList = new ArrayList<>();
         bindingResult.getFieldErrors().forEach(item -> msgList.add(item.getDefaultMessage()));
         String msg = StringUtils.join(msgList, ",");
-        log.error("系统异常：{}", msg);
+        log.error("请求参数出错：{}", e.getMessage());
         return new RestErrorResponse(msg);
     }
 

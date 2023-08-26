@@ -13,6 +13,12 @@
         <result column="is_leaf" property="isLeaf" />
     </resultMap>
 
+    <!-- 自定义map映射结果 -->
+    <resultMap id="mapResult" type="java.util.HashMap">
+        <result property="key" column="id"/>
+        <result property="value" column="name"/>
+    </resultMap>
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, name, label, parentid, is_show, orderby, is_leaf
@@ -25,6 +31,15 @@
             select t.* from course_category t inner join t1 on t1.id = t.parentid
         )
         select *  from t1 order by t1.id, t1.orderby
+    </select>
+
+    <select id="findByIds" resultMap="mapResult">
+        select id, name
+        from course_category
+        where id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </select>
 
 </mapper>

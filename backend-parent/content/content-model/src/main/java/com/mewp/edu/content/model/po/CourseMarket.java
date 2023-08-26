@@ -2,6 +2,8 @@ package com.mewp.edu.content.model.po;
 
 import java.io.Serializable;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -25,6 +27,7 @@ public class CourseMarket implements Serializable {
      * 主键，课程id
      */
     @ApiModelProperty("课程ID")
+    @TableId(type = IdType.INPUT)
     private Long id;
 
     /**
