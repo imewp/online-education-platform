@@ -22,5 +22,5 @@ public class CourseCategoryTreeDTO extends CourseCategory {
      * 子节点
      */
     @ApiModelProperty("子节点")
-    private List<CourseCategory> childrenTreeNodes;
+    private List<CourseCategoryTreeDTO> childrenTreeNodes;
 }

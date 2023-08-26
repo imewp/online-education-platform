@@ -1,5 +1,6 @@
 package com.mewp.edu.content.test;
 
+import com.mewp.edu.content.mapper.CourseCategoryMapper;
 import com.mewp.edu.content.model.dto.CourseCategoryTreeDTO;
 import com.mewp.edu.content.service.CourseCategoryService;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,14 @@ import java.util.List;
 public class CourseCategoryTest {
     @Resource
     private CourseCategoryService courseCategoryService;
+    @Resource
+    private CourseCategoryMapper courseCategoryMapper;
 
+    @Test
+    public void testCourseCategoryMapperTest() {
+        List<CourseCategoryTreeDTO> courseCategoryTreeDTOS = courseCategoryMapper.selectTreeNodes("1");
+        System.out.println(courseCategoryTreeDTOS);
+    }
 
     @Test
     public void testCourseCategoryTree() {

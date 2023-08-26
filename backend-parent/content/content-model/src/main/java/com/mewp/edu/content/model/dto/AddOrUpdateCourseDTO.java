@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -15,6 +16,7 @@ import javax.validation.constraints.Size;
  * @date 2023/8/19 16:28
  */
 @Data
+@Valid
 @ApiModel(value = "AddOrUpdateCourseDTO", description = "添加或修改课程基本信息")
 public class AddOrUpdateCourseDTO {
     /**
@@ -62,6 +64,7 @@ public class AddOrUpdateCourseDTO {
     /**
      * 教育模式(common普通，record 录播，live直播等）
      */
+    @NotBlank(message = "教育模式不能为空")
     @ApiModelProperty(value = "教育模式(普通，录播，直播等）", required = true)
     private String teachmode;
 
