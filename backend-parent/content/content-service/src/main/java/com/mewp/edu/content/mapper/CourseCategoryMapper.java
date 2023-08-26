@@ -1,7 +1,11 @@
 package com.mewp.edu.content.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.mewp.edu.content.model.dto.CourseCategoryTreeDTO;
 import com.mewp.edu.content.model.po.CourseCategory;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,4 +16,11 @@ import com.mewp.edu.content.model.po.CourseCategory;
  */
 public interface CourseCategoryMapper extends BaseMapper<CourseCategory> {
 
+    /**
+     * 通过递归方式获取课程分类的树形结构
+     *
+     * @param id 分类Id
+     * @return 课程分类的树形结构¬
+     */
+    List<CourseCategoryTreeDTO> selectTreeNodes(@Param("id") String id);
 }
