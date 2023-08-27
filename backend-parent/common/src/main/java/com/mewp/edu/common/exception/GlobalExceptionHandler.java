@@ -3,13 +3,24 @@ package com.mewp.edu.common.exception;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.CollectionUtils;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 异常处理器
@@ -30,16 +41,46 @@ public class GlobalExceptionHandler {
         return new RestErrorResponse(e.getErrMessage());
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public RestErrorResponse methodArgumentNotValidException(MethodArgumentNotValidException e) {
-        BindingResult bindingResult = e.getBindingResult();
-        ArrayList<String> msgList = new ArrayList<>();
-        bindingResult.getFieldErrors().forEach(item -> msgList.add(item.getDefaultMessage()));
-        String msg = StringUtils.join(msgList, ",");
-        log.error("请求参数出错：{}", e.getMessage());
+    @ExceptionHandler({MissingServletRequestParameterException.class, ConstraintViolationException.class,
+            BindException.class, MethodArgumentNotValidException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public RestErrorResponse handleException(Exception e) {
+        String msg = "";
+        //缺少参数
+        if (e instanceof MissingServletRequestParameterException) {
+            String exMsg = ((MissingServletRequestParameterException) e).getParameterName();
+            log.error("缺少参数异常：" + e.getMessage());
+            msg = MessageFormat.format("缺少参数{0}", exMsg);
+            return new RestErrorResponse(msg);
+        } else if (e instanceof ConstraintViolationException) {
+            // 单个参数校验异常
+            log.error("单个参数校验异常：" + e.getMessage());
+            Set<ConstraintViolation<?>> sets = ((ConstraintViolationException) e).getConstraintViolations();
+            if (!CollectionUtils.isEmpty(sets)) {
+                StringBuilder sb = new StringBuilder();
+                sets.forEach(error -> {
+                    if (error instanceof FieldError) {
+                        sb.append(((FieldError) error).getField()).append(":");
+                    }
+                    sb.append(error.getMessage()).append(";");
+                });
+                msg = sb.toString();
+                msg = StringUtils.substring(msg, 0, msg.length() - 1);
+            }
+        } else if (e instanceof BindException) {
+            // GET请求的对象参数校验异常
+            log.error("GET请求参数校验异常：" + e.getMessage());
+            List<ObjectError> errors = ((BindException) e).getBindingResult().getAllErrors();
+            msg = getValidExceptionMsg(errors);
+        } else if (e instanceof MethodArgumentNotValidException) {
+            // POST请求的对象参数校验异常
+            log.error("POST请求参数校验异常：" + e.getMessage());
+            List<ObjectError> errors = ((MethodArgumentNotValidException) e).getBindingResult().getAllErrors();
+            msg = getValidExceptionMsg(errors);
+        }
         return new RestErrorResponse(msg);
     }
+
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -47,5 +88,17 @@ public class GlobalExceptionHandler {
         log.error("系统异常：{}", e.getMessage(), e);
         //解析异常信息
         return new RestErrorResponse(CommonError.UNKNOWN_ERROR.getErrMessage());
+    }
+
+    /**
+     * 组合异常信息
+     *
+     * @param errors 异常信息列表
+     * @return 异常信息字符串
+     */
+    private String getValidExceptionMsg(List<ObjectError> errors) {
+        ArrayList<String> msgList = new ArrayList<>();
+        errors.forEach(item -> msgList.add(item.getDefaultMessage()));
+        return StringUtils.join(msgList, ",");
     }
 }

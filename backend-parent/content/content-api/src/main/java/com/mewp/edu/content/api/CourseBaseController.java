@@ -1,5 +1,6 @@
 package com.mewp.edu.content.api;
 
+import com.mewp.edu.common.exception.ValidationGroups;
 import com.mewp.edu.common.model.PageResult;
 import com.mewp.edu.common.param.PageParams;
 import com.mewp.edu.content.model.dto.AddOrUpdateCourseDTO;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.validation.groups.Default;
 
 /**
  * <p>
@@ -49,7 +51,8 @@ public class CourseBaseController {
 
     @ApiOperation("新增课程基础信息")
     @PostMapping()
-    public CourseBaseInfoDTO createCourseBase(@Validated @RequestBody AddOrUpdateCourseDTO courseDTO) {
+    public CourseBaseInfoDTO createCourseBase(@Validated({Default.class, ValidationGroups.Insert.class})
+                                              @RequestBody AddOrUpdateCourseDTO courseDTO) {
         //todo：机构ID 暂时使用硬编码
         Long companyId = 1232141425L;
         return courseBaseService.createCourseBase(companyId, courseDTO);
