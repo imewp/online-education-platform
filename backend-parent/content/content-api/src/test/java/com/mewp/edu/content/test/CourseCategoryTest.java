@@ -41,9 +41,7 @@ public class CourseCategoryTest {
         MapResultHandler<String, String> resultHandler = new MapResultHandler<>();
         courseCategoryMapper.findByIds(resultHandler, Arrays.asList("1", "1-1"));
         Map<String, String> map = resultHandler.getMappedResults();
-        map.forEach((key, value) -> {
-            System.out.println(key + " ----- " + value);
-        });
+        map.forEach((key, value) -> System.out.println(key + " ----- " + value));
     }
 
 }

@@ -1,6 +1,5 @@
 package com.mewp.edu.content.api;
 
-import com.mewp.edu.common.exception.CustomException;
 import com.mewp.edu.common.model.PageResult;
 import com.mewp.edu.common.param.PageParams;
 import com.mewp.edu.content.model.dto.AddOrUpdateCourseDTO;
@@ -49,7 +48,7 @@ public class CourseBaseController {
     }
 
     @ApiOperation("新增课程基础信息")
-    @PostMapping("/")
+    @PostMapping()
     public CourseBaseInfoDTO createCourseBase(@Validated @RequestBody AddOrUpdateCourseDTO courseDTO) {
         //todo：机构ID 暂时使用硬编码
         Long companyId = 1232141425L;

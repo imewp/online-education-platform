@@ -4,11 +4,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.mewp.edu.content.handler.MapResultHandler;
 import com.mewp.edu.content.model.dto.CourseCategoryTreeDTO;
 import com.mewp.edu.content.model.po.CourseCategory;
-import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>

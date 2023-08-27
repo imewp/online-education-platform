@@ -8,6 +8,7 @@ import com.mewp.edu.content.model.po.CourseCategory;
 import com.mewp.edu.content.service.CourseCategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -79,7 +80,11 @@ public class CourseCategoryServiceImpl extends ServiceImpl<CourseCategoryMapper,
     public List<CourseCategoryTreeDTO> buildCourseCategoryTree(List<CourseCategoryTreeDTO> list, String id) {
         return list.stream()
                 .filter(p -> Objects.equals(p.getParentid(), id))
-                .peek(f -> f.setChildrenTreeNodes(buildCourseCategoryTree(list, f.getId())))
-                .collect(Collectors.toList());
+                .peek(f -> {
+                    List<CourseCategoryTreeDTO> categoryTree = buildCourseCategoryTree(list, f.getId());
+                    if (!CollectionUtils.isEmpty(categoryTree)) {
+                        f.setChildrenTreeNodes(categoryTree);
+                    }
+                }).collect(Collectors.toList());
     }
 }
