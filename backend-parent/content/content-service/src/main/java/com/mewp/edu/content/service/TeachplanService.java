@@ -1,7 +1,10 @@
 package com.mewp.edu.content.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.mewp.edu.content.model.dto.TeachPlanDTO;
 import com.mewp.edu.content.model.po.Teachplan;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,11 @@ import com.mewp.edu.content.model.po.Teachplan;
  */
 public interface TeachplanService extends IService<Teachplan> {
 
+    /**
+     * 查询某课程的课程计划，组成树形结构
+     *
+     * @param courseId 课程ID
+     * @return 树形结构
+     */
+    List<TeachPlanDTO> findTeachPlanTree(Long courseId);
 }
