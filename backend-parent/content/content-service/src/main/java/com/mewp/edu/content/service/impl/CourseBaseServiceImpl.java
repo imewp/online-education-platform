@@ -90,6 +90,33 @@ public class CourseBaseServiceImpl extends ServiceImpl<CourseBaseMapper, CourseB
         return getCourseBaseInfo(courseId);
     }
 
+    @Transactional
+    @Override
+    public CourseBaseInfoDTO updateCourseBase(Long companyId, AddOrUpdateCourseDTO courseDTO) {
+        Long courseId = courseDTO.getId();
+        CourseBase courseBase = baseMapper.selectById(courseId);
+        if (Objects.isNull(courseBase)) {
+            CustomException.cast("课程不存在");
+        }
+        //校验本机构只能修改本机构的课程
+        if (!courseBase.getCompanyId().equals(companyId)) {
+            CustomException.cast("本机构只能修改本机构的课程");
+        }
+        CourseBase courseBaseUpdate = PoDtoConvertMapper.INSTANCE.courseBaseDto2Po(courseDTO);
+        int cbResult = baseMapper.updateById(courseBaseUpdate);
+        CourseMarket courseMarketUpdate = PoDtoConvertMapper.INSTANCE.courseMarketDto2Po(courseDTO);
+        int cmResult = saveCourseMarket(courseMarketUpdate);
+        if (cbResult < 1 || cmResult < 1) {
+            CustomException.cast("更新课程失败");
+        }
+        return getCourseBaseInfo(courseId);
+    }
+
+    @Override
+    public CourseBaseInfoDTO queryCourseBaseInfo(Long courseId) {
+        return getCourseBaseInfo(courseId);
+    }
+
     /**
      * 保存课程营销信息
      *

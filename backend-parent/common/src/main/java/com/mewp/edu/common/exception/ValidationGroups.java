@@ -9,9 +9,9 @@ package com.mewp.edu.common.exception;
  */
 public class ValidationGroups {
 
-    public interface Insert{};
+    public interface Insert{}
 
-    public interface Update{};
+    public interface Update{}
 
-    public interface Delete{};
+    public interface Delete{}
 }

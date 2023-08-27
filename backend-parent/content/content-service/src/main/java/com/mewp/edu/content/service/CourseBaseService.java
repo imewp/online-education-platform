@@ -35,4 +35,21 @@ public interface CourseBaseService extends IService<CourseBase> {
      * @return 课程基本信息
      */
     CourseBaseInfoDTO createCourseBase(Long companyId, AddOrUpdateCourseDTO courseDTO);
+
+    /**
+     * 查询单个课程信息
+     *
+     * @param courseId 课程ID
+     * @return 课程基本信息
+     */
+    CourseBaseInfoDTO queryCourseBaseInfo(Long courseId);
+
+    /**
+     * 修改课程基本信息
+     *
+     * @param companyId 教学机构ID
+     * @param courseDTO 课程基本信息
+     * @return 课程基本信息
+     */
+    CourseBaseInfoDTO updateCourseBase(Long companyId, AddOrUpdateCourseDTO courseDTO);
 }

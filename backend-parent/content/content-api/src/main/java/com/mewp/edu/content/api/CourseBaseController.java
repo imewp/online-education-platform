@@ -14,10 +14,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.groups.Default;
@@ -38,7 +35,7 @@ public class CourseBaseController {
     @Resource
     private CourseBaseService courseBaseService;
 
-    @ApiOperation("课程查询")
+    @ApiOperation("课程分页查询")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNo", value = "当前页码", paramType = "query", dataType = "long"),
             @ApiImplicitParam(name = "pageSize", value = "每页记录数", paramType = "query", dataType = "long")
@@ -49,6 +46,13 @@ public class CourseBaseController {
         return courseBaseService.queryCourseBasePageList(pageParams, courseParamsDTO);
     }
 
+    @ApiOperation("查询单个课程")
+    @ApiImplicitParam(name = "courseId", value = "课程ID", paramType = "path", dataType = "long", required = true)
+    @GetMapping("/{courseId}")
+    public CourseBaseInfoDTO queryCourseBaseInfo(@PathVariable("courseId") Long courseId) {
+        return courseBaseService.queryCourseBaseInfo(courseId);
+    }
+
     @ApiOperation("新增课程基础信息")
     @PostMapping()
     public CourseBaseInfoDTO createCourseBase(@Validated({Default.class, ValidationGroups.Insert.class})
@@ -56,6 +60,15 @@ public class CourseBaseController {
         //todo：机构ID 暂时使用硬编码
         Long companyId = 1232141425L;
         return courseBaseService.createCourseBase(companyId, courseDTO);
+    }
+
+    @ApiOperation("修改课程基础信息")
+    @PutMapping()
+    public CourseBaseInfoDTO updateCourseBase(@Validated({Default.class, ValidationGroups.Update.class})
+                                              @RequestBody AddOrUpdateCourseDTO courseDTO) {
+        //todo：机构ID 暂时使用硬编码
+        Long companyId = 1232141425L;
+        return courseBaseService.updateCourseBase(companyId, courseDTO);
     }
 
 }
