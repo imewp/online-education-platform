@@ -1,10 +1,13 @@
 package com.mewp.edu.content.model.dto;
 
+import com.mewp.edu.common.exception.ValidationGroups;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -15,8 +18,17 @@ import javax.validation.constraints.Size;
  * @date 2023/8/19 16:28
  */
 @Data
+@Valid
 @ApiModel(value = "AddOrUpdateCourseDTO", description = "添加或修改课程基本信息")
 public class AddOrUpdateCourseDTO {
+
+    /**
+     * 课程ID
+     */
+    @NotNull(message = "课程ID不能为空", groups = {ValidationGroups.Update.class})
+    @ApiModelProperty(value = "课程ID")
+    private Long id;
+
     /**
      * 课程名称
      */
@@ -28,7 +40,7 @@ public class AddOrUpdateCourseDTO {
      * 适用人群
      */
     @NotBlank(message = "适用人群不能为空")
-    @Size(message = "适用人群内容过少", min = 10)
+    @Size(message = "适用人群内容过少", min = 4)
     @ApiModelProperty(value = "适用人群", required = true)
     private String users;
 
@@ -62,6 +74,7 @@ public class AddOrUpdateCourseDTO {
     /**
      * 教育模式(common普通，record 录播，live直播等）
      */
+    @NotBlank(message = "教育模式不能为空")
     @ApiModelProperty(value = "教育模式(普通，录播，直播等）", required = true)
     private String teachmode;
 

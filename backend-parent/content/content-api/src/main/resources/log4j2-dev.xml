@@ -10,8 +10,8 @@
             <PatternLayout pattern="${PATTERN}"/>
         </Console>
 
-        <RollingFile name="ErrorAppender" fileName="${logdir}/error.log"
-                     filePattern="${logdir}/$${date:yyyy-MM-dd}/error.%d{yyyy-MM-dd-HH}.log" append="true">
+        <RollingFile name="ErrorAppender" fileName="${logdir}/content-error.log"
+                     filePattern="${logdir}/$${date:yyyy-MM-dd}/content-error.%d{yyyy-MM-dd-HH}.log" append="true">
             <PatternLayout pattern="${PATTERN}"/>
             <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
             <Policies>
@@ -19,8 +19,8 @@
             </Policies>
         </RollingFile>
 
-        <RollingFile name="DebugAppender" fileName="${logdir}/info.log"
-                     filePattern="${logdir}/$${date:yyyy-MM-dd}/info.%d{yyyy-MM-dd-HH}.log" append="true">
+        <RollingFile name="DebugAppender" fileName="${logdir}/content-info.log"
+                     filePattern="${logdir}/$${date:yyyy-MM-dd}/content-info.%d{yyyy-MM-dd-HH}.log" append="true">
             <PatternLayout pattern="${PATTERN}"/>
             <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
             <Policies>
@@ -62,7 +62,7 @@
         <!--DEBUG   500-->
         <!--TRACE   600-->
         <!--ALL   Integer.MAX_VALUE-->
-        <Root level="DEBUG" includeLocation="true">
+        <Root level="INFO" includeLocation="true">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="AsyncAppender"/>
             <AppenderRef ref="DebugAppender"/>

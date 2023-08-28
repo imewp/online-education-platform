@@ -25,7 +25,7 @@ public class PageResult<T> implements Serializable {
      * 总记录数
      */
     @ApiModelProperty(value = "总记录数", dataType = "long")
-    private Long count;
+    private Long counts;
 
     /**
      * 当前页码
@@ -43,5 +43,5 @@ public class PageResult<T> implements Serializable {
      * 数据列表
      */
     @ApiModelProperty(value = "数据列表", dataType = "list")
-    private List<T> list;
+    private List<T> items;
 }
