@@ -31,4 +31,19 @@ public interface TeachplanService extends IService<Teachplan> {
      * @param teacherPlanDTO 课程计划
      */
     void saveOrUpdatePlan(AddOrUpdateTeachPlanDTO teacherPlanDTO);
+
+    /**
+     * 删除课程计划
+     *
+     * @param id 计划ID
+     */
+    void deleteTeachPlan(Long id);
+
+    /**
+     * 改变课程计划的排序
+     *
+     * @param moveType 移动类型
+     * @param id       计划ID
+     */
+    void moveTeachPlan(String moveType, Long id);
 }
