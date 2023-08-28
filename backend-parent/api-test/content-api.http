@@ -102,6 +102,10 @@ Content-Type: application/json
   "id": 293
 }
 
+### 查询课程的师资列表
+GET {{content_host}}/content/courseTeacher/list/74
+
+
 
 
 
