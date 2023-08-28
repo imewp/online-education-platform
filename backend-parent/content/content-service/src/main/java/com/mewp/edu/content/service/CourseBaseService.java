@@ -52,4 +52,12 @@ public interface CourseBaseService extends IService<CourseBase> {
      * @return 课程基本信息
      */
     CourseBaseInfoDTO updateCourseBase(Long companyId, AddOrUpdateCourseDTO courseDTO);
+
+    /**
+     * 删除单个课程
+     *
+     * @param companyId 教学机构ID
+     * @param courseId  课程ID
+     */
+    void deleteCourseBase(Long companyId, Long courseId);
 }
