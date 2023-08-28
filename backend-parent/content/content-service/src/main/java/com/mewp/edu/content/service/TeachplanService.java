@@ -1,6 +1,7 @@
 package com.mewp.edu.content.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.mewp.edu.content.model.dto.AddOrUpdateTeachPlanDTO;
 import com.mewp.edu.content.model.dto.TeachPlanDTO;
 import com.mewp.edu.content.model.po.Teachplan;
 
@@ -23,4 +24,11 @@ public interface TeachplanService extends IService<Teachplan> {
      * @return 树形结构
      */
     List<TeachPlanDTO> findTeachPlanTree(Long courseId);
+
+    /**
+     * 添加或修改课程计划
+     *
+     * @param teacherPlanDTO 课程计划
+     */
+    void saveOrUpdatePlan(AddOrUpdateTeachPlanDTO teacherPlanDTO);
 }

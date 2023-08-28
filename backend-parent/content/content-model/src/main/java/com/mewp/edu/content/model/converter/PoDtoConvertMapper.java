@@ -1,11 +1,13 @@
 package com.mewp.edu.content.model.converter;
 
 import com.mewp.edu.content.model.dto.AddOrUpdateCourseDTO;
+import com.mewp.edu.content.model.dto.AddOrUpdateTeachPlanDTO;
 import com.mewp.edu.content.model.dto.CourseBaseInfoDTO;
 import com.mewp.edu.content.model.dto.CourseCategoryTreeDTO;
 import com.mewp.edu.content.model.po.CourseBase;
 import com.mewp.edu.content.model.po.CourseCategory;
 import com.mewp.edu.content.model.po.CourseMarket;
+import com.mewp.edu.content.model.po.Teachplan;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -33,5 +35,7 @@ public interface PoDtoConvertMapper {
     CourseCategoryTreeDTO courseCategoryPo2TreeDto(CourseCategory courseCategory);
 
     List<CourseCategoryTreeDTO> courseCategoryPos2TreeDtoList(List<CourseCategory> courseCategories);
+
+    Teachplan teachPlanDto2Po(AddOrUpdateTeachPlanDTO teacherDto);
 }
 

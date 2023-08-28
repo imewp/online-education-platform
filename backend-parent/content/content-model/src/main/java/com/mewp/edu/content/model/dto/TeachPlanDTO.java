@@ -4,6 +4,7 @@ import com.mewp.edu.content.model.po.Teachplan;
 import com.mewp.edu.content.model.po.TeachplanMedia;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * @date 2023/8/27 17:44
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class TeachPlanDTO extends Teachplan {
     /**
      * 课程计划关联的媒资信息
