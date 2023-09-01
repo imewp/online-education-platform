@@ -42,7 +42,7 @@ public class CourseTeacherServiceImpl extends ServiceImpl<CourseTeacherMapper, C
     public CourseTeacher saveOrUpdateTeacher(AddOrUpdateCourseTeacherDTO teacherDTO) {
         Long courseId = teacherDTO.getCourseId();
         //判断下课程是否存在
-        CourseBase courseBase = findCourseBase(courseId);
+        findCourseBase(courseId);
         Long id = teacherDTO.getId();
         CourseTeacher courseTeacher = PoDtoConvertMapper.INSTANCE.courseTeacherDto2Vo(teacherDTO);
         //新增操作
