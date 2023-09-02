@@ -1,6 +1,6 @@
 spring:
   application:
-    name: content-api
+    name: gateway
   profiles:
     active: dev
   cloud:
@@ -14,14 +14,7 @@ spring:
         group: backend-parent
         file-extension: yaml
         refresh-enabled: true
-        extension-configs:
-          - data-id: content-service-${spring.profiles.active}.yaml
-            group: backend-parent
-            refresh: true
         shared-configs:
-          - data-id: swagger-${spring.profiles.active}.yaml
-            group: backend-common
-            refresh: true
           - data-id: logging-${spring.profiles.active}.yaml
             group: backend-common
             refresh: true
