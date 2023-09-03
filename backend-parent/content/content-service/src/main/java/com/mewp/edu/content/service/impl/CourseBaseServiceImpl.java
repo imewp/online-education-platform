@@ -7,15 +7,15 @@ import com.mewp.edu.common.exception.CustomException;
 import com.mewp.edu.common.model.PageResult;
 import com.mewp.edu.common.param.PageParams;
 import com.mewp.edu.content.handler.MapResultHandler;
-import com.mewp.edu.content.mapper.CourseBaseMapper;
-import com.mewp.edu.content.mapper.CourseCategoryMapper;
-import com.mewp.edu.content.mapper.CourseMarketMapper;
+import com.mewp.edu.content.mapper.*;
 import com.mewp.edu.content.model.converter.PoDtoConvertMapper;
 import com.mewp.edu.content.model.dto.AddOrUpdateCourseDTO;
 import com.mewp.edu.content.model.dto.CourseBaseInfoDTO;
 import com.mewp.edu.content.model.dto.QueryCourseParamsDTO;
 import com.mewp.edu.content.model.po.CourseBase;
 import com.mewp.edu.content.model.po.CourseMarket;
+import com.mewp.edu.content.model.po.CourseTeacher;
+import com.mewp.edu.content.model.po.Teachplan;
 import com.mewp.edu.content.service.CourseBaseService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -42,6 +42,10 @@ public class CourseBaseServiceImpl extends ServiceImpl<CourseBaseMapper, CourseB
     private CourseMarketMapper courseMarketMapper;
     @Resource
     private CourseCategoryMapper courseCategoryMapper;
+    @Resource
+    private CourseTeacherMapper courseTeacherMapper;
+    @Resource
+    private TeachplanMapper teachplanMapper;
 
     @Override
     public PageResult<CourseBase> queryCourseBasePageList(PageParams pageParams, QueryCourseParamsDTO courseParamsDTO) {
@@ -110,6 +114,36 @@ public class CourseBaseServiceImpl extends ServiceImpl<CourseBaseMapper, CourseB
             CustomException.cast("更新课程失败");
         }
         return getCourseBaseInfo(courseId);
+    }
+
+    @Transactional
+    @Override
+    public void deleteCourseBase(Long companyId, Long courseId) {
+        CourseBase courseBase = baseMapper.selectById(courseId);
+        if (Objects.isNull(courseBase)) {
+            CustomException.cast("课程不存在");
+        }
+        //校验本机构只能删除本机构的课程
+        if (!courseBase.getCompanyId().equals(companyId)) {
+            CustomException.cast("只允许删除本机构的课程");
+        }
+
+        if (!"202002".equals(courseBase.getAuditStatus())) {
+            CustomException.cast("不允许删除该课程");
+        }
+
+        //删除课程教师信息
+        LambdaQueryWrapper<CourseTeacher> teacherQueryWrapper = new LambdaQueryWrapper<>();
+        teacherQueryWrapper.eq(CourseTeacher::getCourseId, courseId);
+        courseTeacherMapper.delete(teacherQueryWrapper);
+        //删除课程计划
+        LambdaQueryWrapper<Teachplan> teachPlanQueryWrapper = new LambdaQueryWrapper<>();
+        teachPlanQueryWrapper.eq(Teachplan::getCourseId, courseId);
+        teachplanMapper.delete(teachPlanQueryWrapper);
+        //删除营销信息
+        courseMarketMapper.deleteById(courseId);
+        //删除课程基本信息
+        baseMapper.deleteById(courseId);
     }
 
     @Override

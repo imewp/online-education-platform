@@ -1,15 +1,15 @@
 package com.mewp.edu.content.api;
 
+import com.mewp.edu.content.model.dto.AddOrUpdateTeachPlanDTO;
 import com.mewp.edu.content.model.dto.TeachPlanDTO;
 import com.mewp.edu.content.service.TeachplanService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -37,5 +37,30 @@ public class TeachPlanController {
     @GetMapping("/{courseId}/tree-nodes")
     public List<TeachPlanDTO> getTreeNodes(@PathVariable("courseId") Long courseId) {
         return teachplanService.findTeachPlanTree(courseId);
+    }
+
+    @ApiOperation("添加或修改课程计划")
+    @PostMapping()
+    public void saveOrUpdatePlan(@RequestBody @Validated AddOrUpdateTeachPlanDTO teacherPlanDTO) {
+        teachplanService.saveOrUpdatePlan(teacherPlanDTO);
+    }
+
+    @ApiOperation("删除课程计划")
+    @ApiImplicitParam(name = "id", value = "课程计划ID", paramType = "path", dataType = "long", required = true)
+    @DeleteMapping("/{id}")
+    public void deleteTeachPlan(@PathVariable("id") Long id) {
+        teachplanService.deleteTeachPlan(id);
+    }
+
+    @ApiOperation("课程计划排序")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "moveType", value = "移动类型（movedown向下，moveup向上）", paramType = "path",
+                    dataType = "string", required = true),
+            @ApiImplicitParam(name = "id", value = "课程计划ID", paramType = "path", dataType = "long", required = true)
+    })
+    @PostMapping("/{moveType}/{id}")
+    public void moveTeachPlan(@PathVariable("moveType") String moveType,
+                              @PathVariable("id") Long id) {
+        teachplanService.moveTeachPlan(moveType, id);
     }
 }

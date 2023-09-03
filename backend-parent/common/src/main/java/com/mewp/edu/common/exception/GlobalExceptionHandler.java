@@ -34,7 +34,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public RestErrorResponse customException(CustomException e) {
-        log.error("系统异常：{}", e.getErrMessage(), e);
+        //获取发生异常的类和方法
+        StackTraceElement stackTraceElement = e.getStackTrace()[1];
+        String className = stackTraceElement.getClassName();
+        String methodName = stackTraceElement.getMethodName();
+        log.error("系统异常：【{}】，发生异常的类：【{}】，方法：【{}】", e.getErrMessage(), className, methodName);
         //解析异常信息
         return new RestErrorResponse(e.getErrMessage());
     }

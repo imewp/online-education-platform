@@ -16,8 +16,7 @@ import java.util.Arrays;
 public class ContentCodeGenerator {
 
     // TODO 修改服务名以及数据表名
-//    private static final String SERVICE_NAME = "content";
-    private static final String SERVICE_NAME = "system";
+    private static final String SERVICE_NAME = "content";
 
     //数据库账号
     private static final String DATA_SOURCE_USER_NAME = "root";
@@ -27,15 +26,14 @@ public class ContentCodeGenerator {
     private static final String[] TABLE_NAMES = new String[]{
 //			"mq_message",
 //			"mq_message_history"
-//            "course_base",
-//            "course_market",
-//            "teachplan",
-//            "teachplan_media",
-//            "course_teacher",
-//            "course_category",
-//            "course_publish",
-//            "course_publish_pre"
-            "dictionary"
+            "course_base",
+            "course_market",
+            "teachplan",
+            "teachplan_media",
+            "course_teacher",
+            "course_category",
+            "course_publish",
+            "course_publish_pre"
 
     };
 
@@ -55,7 +53,7 @@ public class ContentCodeGenerator {
         gc.setOutputDir(System.getProperty("user.dir") + "/generator/src/main/java");
         gc.setAuthor("mewp");
         gc.setOpen(false);
-        gc.setSwagger2(true);
+        gc.setSwagger2(false);
         gc.setServiceName("%sService");
         gc.setBaseResultMap(true);
         gc.setBaseColumnList(true);

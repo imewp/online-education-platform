@@ -9,7 +9,6 @@
     </parent>
 
     <artifactId>content-service</artifactId>
-    <version>1.0.0</version>
 
     <dependencies>
         <dependency>
@@ -30,6 +29,15 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-context</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
 
         <!-- 排除 Spring Boot 依赖的日志包冲突 -->

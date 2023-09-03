@@ -27,7 +27,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 @Data
 @TableName("teachplan")
 public class Teachplan implements Serializable {
-
     private static final long serialVersionUID = 1595018176093812658L;
 
     @TableId(value = "id", type = IdType.AUTO)

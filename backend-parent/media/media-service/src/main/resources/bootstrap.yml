@@ -1,0 +1,16 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: media-service
+  cloud:
+    nacos:
+      server-addr: 192.168.3.156:8848
+      discovery:
+        namespace: ${spring.profiles.active}
+        group: backend-parent
+      config:
+        namespace: ${spring.profiles.active}
+        group: backend-parent
+        file-extension: yaml
+        refresh-enabled: true

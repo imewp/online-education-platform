@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: gateway
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      server-addr: 192.168.3.156:8848
+      discovery:
+        namespace: ${spring.profiles.active}
+        group: backend-parent
+      config:
+        namespace: ${spring.profiles.active}
+        group: backend-parent
+        file-extension: yaml
+        refresh-enabled: true
+        shared-configs:
+          - data-id: logging-${spring.profiles.active}.yaml
+            group: backend-common
+            refresh: true

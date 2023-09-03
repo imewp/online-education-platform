@@ -71,4 +71,12 @@ public class CourseBaseController {
         return courseBaseService.updateCourseBase(companyId, courseDTO);
     }
 
+    @ApiOperation("删除单个课程")
+    @ApiImplicitParam(name = "courseId", value = "课程ID", paramType = "path", dataType = "long", required = true)
+    @DeleteMapping("/{courseId}")
+    public void deleteCourseBase(@PathVariable("courseId") Long courseId) {
+        //todo：机构ID 暂时使用硬编码
+        Long companyId = 1232141425L;
+        courseBaseService.deleteCourseBase(companyId, courseId);
+    }
 }

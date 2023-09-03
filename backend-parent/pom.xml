@@ -13,6 +13,8 @@
         <module>content</module>
         <module>generator</module>
         <module>system</module>
+        <module>gateway</module>
+        <module>media</module>
     </modules>
 
     <properties>
