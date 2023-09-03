@@ -9,7 +9,6 @@
     </parent>
 
     <artifactId>content-service</artifactId>
-    <version>1.0.0</version>
 
     <dependencies>
         <dependency>
