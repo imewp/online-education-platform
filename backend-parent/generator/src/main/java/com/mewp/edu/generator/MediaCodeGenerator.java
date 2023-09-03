@@ -12,6 +12,7 @@ import java.util.Arrays;
 
 /**
  * MyBatis-Plus 代码生成类
+ * @author mewp
  */
 public class MediaCodeGenerator {
 
