@@ -53,7 +53,7 @@ public class MediaFilesController {
         //文件名
         fileParamsDTO.setFilename(upload.getOriginalFilename());
         //创建临时文件
-        File tempFile = File.createTempFile("minio", "temp");
+        File tempFile = File.createTempFile("minio", ".temp");
         //上传的文件拷贝到临时文件
         upload.transferTo(tempFile);
         //文件路径

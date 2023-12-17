@@ -96,7 +96,10 @@ public class MediaFilesServiceImpl extends ServiceImpl<MediaFilesMapper, MediaFi
         //文件大小
         fileParamsDTO.setFileSize(file.length());
         //将文件上传到minio
-        addMediaFilesToMinio(localFilePath, mimeType, bucketFiles, objectName);
+        boolean b = addMediaFilesToMinio(localFilePath, mimeType, bucketFiles, objectName);
+        if (!b) {
+            CustomException.cast("上传文件失败");
+        }
         //将文件信息存储到数据库中  通过代理对象去调用该方法就可以解决事务问题
         MediaFiles mediaFiles = currentProxy.addMediaFileToDb(companyId, fileMd5, fileParamsDTO, bucketFiles, objectName);
         //返回结果
