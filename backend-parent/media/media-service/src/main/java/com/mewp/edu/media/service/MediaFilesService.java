@@ -50,7 +50,8 @@ public interface MediaFilesService extends IService<MediaFiles> {
      * @param queryMediaParamsDTO 查询参数
      * @return 文件列表
      */
-    PageResult<MediaFiles> queryMediaFiles(Long companyId, PageParams pageParams, QueryMediaParamsDTO queryMediaParamsDTO);
+    PageResult<MediaFiles> queryMediaFiles(Long companyId, PageParams pageParams,
+                                           QueryMediaParamsDTO queryMediaParamsDTO);
 
     /**
      * 检查文件是否存在
@@ -78,4 +79,16 @@ public interface MediaFilesService extends IService<MediaFiles> {
      * @return 响应结果
      */
     ResponseResult<Boolean> uploadChunk(String fileMd5, int chunkIndex, String localChunkFilePath);
+
+    /**
+     * 合并分块文件
+     *
+     * @param companyId           机构ID
+     * @param fileMd5             文件md5
+     * @param chunkTotal          分块总数
+     * @param uploadFileParamsDto 上传文件信息
+     * @return 响应结果
+     */
+    ResponseResult<Boolean> mergeChunks(Long companyId, String fileMd5, int chunkTotal,
+                                        UploadFileParamsDTO uploadFileParamsDto);
 }

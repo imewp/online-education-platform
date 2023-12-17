@@ -1,6 +1,7 @@
 package com.mewp.edu.media.api;
 
 import com.mewp.edu.common.model.ResponseResult;
+import com.mewp.edu.media.model.dto.UploadFileParamsDTO;
 import com.mewp.edu.media.service.MediaFilesService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -14,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.TreeMap;
 
 /**
  * 大文件上传接口
@@ -71,15 +71,21 @@ public class BigFilesController {
 
     @ApiOperation("合并文件")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "file", value = "文件", required = true, dataType = "MultipartFile"),
+            @ApiImplicitParam(name = "fileMd5", value = "文件MD5", required = true, dataType = "string"),
             @ApiImplicitParam(name = "fileName", value = "文件名", required = true, dataType = "string"),
             @ApiImplicitParam(name = "chunkTotal", value = "分块总数", required = true, dataType = "int")
     })
     @PostMapping("/mergechunks")
-    public ResponseResult mergeChunks(@RequestParam("file") MultipartFile file,
-                                      @RequestParam("fileName") String fileName,
-                                      @RequestParam("chunkTotal") Integer chunkTotal) {
-        return null;
+    public ResponseResult<Boolean> mergeChunks(@RequestParam("fileMd5") String fileMd5,
+                                               @RequestParam("fileName") String fileName,
+                                               @RequestParam("chunkTotal") Integer chunkTotal) {
+        Long companyId = 1232141425L;
+        UploadFileParamsDTO paramsDTO = new UploadFileParamsDTO();
+        paramsDTO.setFileType("001002");
+        paramsDTO.setTags("课程视频");
+        paramsDTO.setRemark("");
+        paramsDTO.setFilename(fileName);
+        return mediaFilesService.mergeChunks(companyId, fileMd5, chunkTotal, paramsDTO);
     }
 }
 
