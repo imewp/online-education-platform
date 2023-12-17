@@ -17,6 +17,7 @@ import java.io.FilterInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -128,6 +129,9 @@ public class MinioTest {
         File chunkFolder = new File(chunkPath);
         //分块文件
         File[] files = chunkFolder.listFiles();
+        if (Objects.isNull(files) || files.length == 0) {
+            return;
+        }
         //将分块文件上传到minio
         for (int i = 0; i < files.length; i++) {
             //上传文件的参数信息
@@ -147,7 +151,7 @@ public class MinioTest {
     @Test
     void uploadMerge() throws Exception {
         List<ComposeSource> sources = Stream.iterate(0, i -> ++i)
-                .limit(7)
+                .limit(5)
                 .map(i -> ComposeSource.builder()
                         .bucket("asiatrip")
                         .object("chunk/".concat(Integer.toString(i)))
@@ -156,7 +160,8 @@ public class MinioTest {
         ComposeObjectArgs composeObjectArgs = ComposeObjectArgs.builder()
                 .bucket("asiatrip")
                 .object("merge01.mp4")
-                .sources(sources).build();
+                .sources(sources)       //指定源文件
+                .build();
         minioClient.composeObject(composeObjectArgs);
     }
 
@@ -164,7 +169,7 @@ public class MinioTest {
      * 清除分块文件
      */
     @Test
-    public void test_removeObjects() {
+    public void testRemoveObjects() {
         //合并分块完成将分块文件清除
         List<DeleteObject> deleteObjects = Stream.iterate(0, i -> ++i)
                 .limit(7)

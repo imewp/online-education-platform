@@ -1,6 +1,7 @@
 package com.mewp.edu.media.service;
 
 import com.mewp.edu.common.model.PageResult;
+import com.mewp.edu.common.model.ResponseResult;
 import com.mewp.edu.common.param.PageParams;
 import com.mewp.edu.media.model.dto.QueryMediaParamsDTO;
 import com.mewp.edu.media.model.dto.UploadFileParamsDTO;
@@ -50,4 +51,31 @@ public interface MediaFilesService extends IService<MediaFiles> {
      * @return 文件列表
      */
     PageResult<MediaFiles> queryMediaFiles(Long companyId, PageParams pageParams, QueryMediaParamsDTO queryMediaParamsDTO);
+
+    /**
+     * 检查文件是否存在
+     *
+     * @param fileMd5 文件md5
+     * @return false：不存在，true：存在
+     */
+    ResponseResult<Boolean> checkFile(String fileMd5);
+
+    /**
+     * 检查分块是否存在
+     *
+     * @param fileMd5    文件md5
+     * @param chunkIndex 分块序号
+     * @return false：不存在，true：存在
+     */
+    ResponseResult<Boolean> checkChunk(String fileMd5, int chunkIndex);
+
+    /**
+     * 上传分块文件
+     *
+     * @param fileMd5            文件md5
+     * @param chunkIndex         分块序号
+     * @param localChunkFilePath 分块文件本地路径
+     * @return 响应结果
+     */
+    ResponseResult<Boolean> uploadChunk(String fileMd5, int chunkIndex, String localChunkFilePath);
 }

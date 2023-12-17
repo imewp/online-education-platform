@@ -7,6 +7,7 @@ import com.j256.simplemagic.ContentInfo;
 import com.j256.simplemagic.ContentInfoUtil;
 import com.mewp.edu.common.exception.CustomException;
 import com.mewp.edu.common.model.PageResult;
+import com.mewp.edu.common.model.ResponseResult;
 import com.mewp.edu.common.param.PageParams;
 import com.mewp.edu.common.utils.DateUtil;
 import com.mewp.edu.media.mapper.MediaFilesMapper;
@@ -16,6 +17,7 @@ import com.mewp.edu.media.model.dto.UploadFileParamsDTO;
 import com.mewp.edu.media.model.dto.UploadFileResultDTO;
 import com.mewp.edu.media.model.po.MediaFiles;
 import com.mewp.edu.media.service.MediaFilesService;
+import io.minio.GetObjectArgs;
 import io.minio.MinioClient;
 import io.minio.UploadObjectArgs;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +32,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -147,6 +151,75 @@ public class MediaFilesServiceImpl extends ServiceImpl<MediaFilesMapper, MediaFi
         return new PageResult<>(pageResult.getTotal(), pageParams.getPageNo(), pageParams.getPageSize(), pageResult.getRecords());
     }
 
+    @Override
+    public ResponseResult<Boolean> checkFile(String fileMd5) {
+        // 查询文件信息
+        MediaFiles mediaFiles = mediaFilesMapper.selectById(fileMd5);
+        if (!Objects.isNull(mediaFiles)) {
+            // 桶
+            String bucket = mediaFiles.getBucket();
+            // 存储路径
+            String filePath = mediaFiles.getFilePath();
+            try {
+                GetObjectArgs getObjectArgs = GetObjectArgs.builder()
+                        .bucket(bucket)         //桶名
+                        .object(filePath)      //对象名
+                        .build();
+                // 文件流
+                InputStream stream = minioClient.getObject(getObjectArgs);
+                if (Objects.nonNull(stream)) {
+                    return ResponseResult.success(true);
+                }
+            } catch (Exception e) {
+                log.warn(e.getMessage());
+            }
+        }
+        // 文件不存在
+        return ResponseResult.success(false);
+    }
+
+    @Override
+    public ResponseResult<Boolean> checkChunk(String fileMd5, int chunkIndex) {
+        // 得到分块文件目录
+        String chunkFileFolderPath = getChunkFileFolderPath(fileMd5);
+        // 得到分块文件的路径
+        Path path = Paths.get(chunkFileFolderPath, String.valueOf(chunkIndex));
+        InputStream fis;
+        try {
+            GetObjectArgs getObjectArgs = GetObjectArgs.builder()
+                    .bucket(bucketVideos)         //桶名
+                    .object(path.toString())      //对象名
+                    .build();
+            fis = minioClient.getObject(getObjectArgs);
+            if (Objects.nonNull(fis)) {
+                // 分块已存在
+                return ResponseResult.success(true);
+            }
+        } catch (Exception e) {
+            log.warn(e.getMessage());
+        }
+        // 分块未存在
+        return ResponseResult.success(false);
+    }
+
+    @Override
+    public ResponseResult<Boolean> uploadChunk(String fileMd5, int chunkIndex, String localChunkFilePath) {
+        // 得到分块文件目录
+        String chunkFileFolderPath = getChunkFileFolderPath(fileMd5);
+        // 得到分块文件的路径
+        Path path = Paths.get(chunkFileFolderPath, String.valueOf(chunkIndex));
+        // 文件类型
+        String mimeType = getMimeType(null);
+        boolean b = addMediaFilesToMinio(localChunkFilePath, mimeType, bucketVideos, path.toString());
+        if (b) {
+            log.info("上传分块文件成功：{}", path);
+            return ResponseResult.success();
+        } else {
+            log.info("上传分块{} 文件失败：{}", chunkIndex, path);
+            return ResponseResult.fail("分片" + chunkIndex + "上传失败");
+        }
+    }
+
     /**
      * 获取文件默认存储目录路径 年/月/日
      *
@@ -221,5 +294,16 @@ public class MediaFilesServiceImpl extends ServiceImpl<MediaFilesMapper, MediaFi
             }
         }
         return false;
+    }
+
+    /**
+     * 获得分块文件的目录
+     *
+     * @param fileMd5 文件md5
+     * @return 目录
+     */
+    private String getChunkFileFolderPath(String fileMd5) {
+        Path path = Paths.get(fileMd5.substring(0, 1), fileMd5.substring(1, 2), fileMd5, "chunk");
+        return path.toString();
     }
 }
