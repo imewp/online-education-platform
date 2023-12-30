@@ -56,17 +56,15 @@ public class HttpUtil {
             }*/
         // 定义 BufferedReader输入流来读取URL的响应
         BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        String result = "";
+        StringBuilder result = new StringBuilder();
         String line;
         while ((line = in.readLine()) != null) {
-            result += line;
+            result.append(line);
         }
         in.close();
         connection.disconnect();
-        /**
-         * 返回结果
-         */
-        Map<String, Object> resultMap = JsonUtil.jsonToMap(result);
+        //返回结果
+        Map<String, Object> resultMap = JsonUtil.jsonToMap(result.toString());
         return resultMap.get("access_token").toString();
     }
 
@@ -91,6 +89,16 @@ public class HttpUtil {
         return HttpUtil.postGeneralUrl(url, contentType, params, encoding);
     }
 
+    /**
+     * 发送POST请求并返回URL的响应结果
+     *
+     * @param generalUrl  URL地址
+     * @param contentType 内容类型
+     * @param params      参数
+     * @param encoding    编码格式
+     * @return 响应结果的字符串形式
+     * @throws Exception 异常信息
+     */
     public static String postGeneralUrl(String generalUrl, String contentType, String params, String encoding)
             throws Exception {
         URL url = new URL(generalUrl);
@@ -121,17 +129,16 @@ public class HttpUtil {
             System.err.println(key + "--->" + headers.get(key));
         }*/
         // 定义 BufferedReader输入流来读取URL的响应
-        BufferedReader in = null;
+        BufferedReader in;
         in = new BufferedReader(
                 new InputStreamReader(connection.getInputStream(), encoding));
-        String result = "";
+        StringBuilder result = new StringBuilder();
         String getLine;
         while ((getLine = in.readLine()) != null) {
-            result += getLine;
+            result.append(getLine);
         }
         in.close();
         connection.disconnect();
-        //System.err.println("result:" + result);
-        return result;
+        return result.toString();
     }
 }
