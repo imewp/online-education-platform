@@ -3,6 +3,8 @@ package com.mewp.edu.media.model.converter;
 import com.mewp.edu.media.model.dto.UploadFileParamsDTO;
 import com.mewp.edu.media.model.dto.UploadFileResultDTO;
 import com.mewp.edu.media.model.po.MediaFiles;
+import com.mewp.edu.media.model.po.MediaProcess;
+import com.mewp.edu.media.model.po.MediaProcessHistory;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -20,5 +22,9 @@ public interface PoDtoConvertMapper {
     MediaFiles uploadFileParamsDto2MediaFiles(UploadFileParamsDTO uploadFileParamsDto);
 
     UploadFileResultDTO mediaFiles2UploadFileResultDTO(MediaFiles mediaFiles);
+
+    MediaProcess mediaFiles2MediaProcess(MediaFiles mediaFiles);
+
+    MediaProcessHistory mediaProcess2MediaProcessHistory(MediaProcess mediaProcess);
 }
 

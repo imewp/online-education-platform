@@ -11,11 +11,13 @@ import com.mewp.edu.common.model.ResponseResult;
 import com.mewp.edu.common.param.PageParams;
 import com.mewp.edu.common.utils.DateUtil;
 import com.mewp.edu.media.mapper.MediaFilesMapper;
+import com.mewp.edu.media.mapper.MediaProcessMapper;
 import com.mewp.edu.media.model.converter.PoDtoConvertMapper;
 import com.mewp.edu.media.model.dto.QueryMediaParamsDTO;
 import com.mewp.edu.media.model.dto.UploadFileParamsDTO;
 import com.mewp.edu.media.model.dto.UploadFileResultDTO;
 import com.mewp.edu.media.model.po.MediaFiles;
+import com.mewp.edu.media.model.po.MediaProcess;
 import com.mewp.edu.media.service.MediaFilesService;
 import io.minio.*;
 import io.minio.messages.DeleteError;
@@ -50,10 +52,11 @@ import java.util.stream.Stream;
 @Slf4j
 @Service
 public class MediaFilesServiceImpl extends ServiceImpl<MediaFilesMapper, MediaFiles> implements MediaFilesService {
-
     private final MinioClient minioClient;
 
     private final MediaFilesMapper mediaFilesMapper;
+
+    private final MediaProcessMapper mediaProcessMapper;
 
     /**
      * 代理对象
@@ -73,9 +76,11 @@ public class MediaFilesServiceImpl extends ServiceImpl<MediaFilesMapper, MediaFi
     @Value("${minio.bucket.videofiles}")
     private String bucketVideos;
 
-    public MediaFilesServiceImpl(MinioClient minioClient, MediaFilesMapper mediaFilesMapper) {
+    public MediaFilesServiceImpl(MinioClient minioClient, MediaFilesMapper mediaFilesMapper,
+                                 MediaProcessMapper mediaProcessMapper) {
         this.minioClient = minioClient;
         this.mediaFilesMapper = mediaFilesMapper;
+        this.mediaProcessMapper = mediaProcessMapper;
     }
 
     @Override
@@ -137,6 +142,9 @@ public class MediaFilesServiceImpl extends ServiceImpl<MediaFilesMapper, MediaFi
             log.error("保存文件信息到数据库失败，{}", mediaFiles);
             CustomException.cast("保存文件信息失败");
         }
+        //添加到待处理任务表
+        addWaitingTask(mediaFiles);
+        log.info("保存文件信息到数据库成功");
         return mediaFiles;
     }
 
@@ -331,15 +339,7 @@ public class MediaFilesServiceImpl extends ServiceImpl<MediaFilesMapper, MediaFi
         return contentInfo != null ? contentInfo.getMimeType() : mimetype;
     }
 
-    /**
-     * 将文件写入minio
-     *
-     * @param localFilePath 文件地址
-     * @param mimetype      媒体类型
-     * @param bucket        桶
-     * @param objectName    对象名称
-     * @return 是否成功
-     */
+    @Override
     public boolean addMediaFilesToMinio(String localFilePath, String mimetype, String bucket, String objectName) {
         try {
             UploadObjectArgs objectArgs = UploadObjectArgs.builder()
@@ -377,27 +377,15 @@ public class MediaFilesServiceImpl extends ServiceImpl<MediaFilesMapper, MediaFi
         return path.toString();
     }
 
-    /**
-     * 获得合并后的文件路径
-     *
-     * @param fileMd5 文件md5，即文件id
-     * @param extName 文件扩展名
-     * @return 文件路径
-     */
-    private String getFilePathByMd5(String fileMd5, String extName) {
+    @Override
+    public String getFilePathByMd5(String fileMd5, String extName) {
         String fileName = fileMd5 + extName;
         Path path = Paths.get(fileMd5.substring(0, 1), fileMd5.substring(1, 2), fileMd5, fileName);
         return path.toString();
     }
 
-    /**
-     * 从minio下载文件
-     *
-     * @param bucket   桶
-     * @param filePath 文件路径
-     * @return 下载后的文件
-     */
-    private File downLoadFileFromMinIo(String bucket, String filePath) {
+    @Override
+    public File downLoadFileFromMinIo(String bucket, String filePath) {
         File minioFile;
         FileOutputStream fos = null;
         try {
@@ -451,6 +439,28 @@ public class MediaFilesServiceImpl extends ServiceImpl<MediaFilesMapper, MediaFi
             });
         } catch (Exception e) {
             log.error("清除分块文件失败，chunkFileFolderPath：{}, 异常原因：{}", chunkFileFolderPath, e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 添加待处理任务
+     *
+     * @param mediaFiles 媒体文件
+     */
+    private void addWaitingTask(MediaFiles mediaFiles) {
+        // 文件名
+        String filename = mediaFiles.getFilename();
+        // 文件扩展名
+        String extension = filename.substring(filename.lastIndexOf("."));
+        //文件 mimeType
+        String mimeType = getMimeType(extension);
+        log.info("{} 的 mineType为：{}", filename, mimeType);
+        // 如果是avi视频添加到视频待处理表  fixme：接收到文件mineType为application/octet-stream，待解决
+        if ("video/x-msvideo".equals(mimeType)) {
+            MediaProcess mediaProcess = PoDtoConvertMapper.INSTANCE.mediaFiles2MediaProcess(mediaFiles);
+            mediaProcess.setStatus("1");//未处理
+            mediaProcess.setFailCount(0);
+            mediaProcessMapper.insert(mediaProcess);
         }
     }
 }

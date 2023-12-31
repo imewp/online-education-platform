@@ -83,4 +83,10 @@ public class MediaProcess implements Serializable {
      */
     @ApiModelProperty(value = "失败原因", dataType = "string")
     private String errormsg;
+
+    /**
+     * 失败次数
+     */
+    @ApiModelProperty(value = "失败次数", dataType = "int")
+    private int failCount;
 }

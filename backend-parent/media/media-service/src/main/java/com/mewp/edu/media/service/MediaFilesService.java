@@ -9,6 +9,8 @@ import com.mewp.edu.media.model.dto.UploadFileResultDTO;
 import com.mewp.edu.media.model.po.MediaFiles;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.io.File;
+
 /**
  * <p>
  * 媒资信息 服务类
@@ -18,7 +20,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2023-09-03
  */
 public interface MediaFilesService extends IService<MediaFiles> {
-
     /**
      * 上传文件
      *
@@ -91,4 +92,33 @@ public interface MediaFilesService extends IService<MediaFiles> {
      */
     ResponseResult<Boolean> mergeChunks(Long companyId, String fileMd5, int chunkTotal,
                                         UploadFileParamsDTO uploadFileParamsDto);
+
+    /**
+     * 将文件写入minio
+     *
+     * @param localFilePath 文件地址
+     * @param mimetype      媒体类型
+     * @param bucket        桶
+     * @param objectName    对象名称
+     * @return 是否成功
+     */
+    boolean addMediaFilesToMinio(String localFilePath, String mimetype, String bucket, String objectName);
+
+    /**
+     * 从minio下载文件
+     *
+     * @param bucket   桶
+     * @param filePath 文件路径
+     * @return 下载后的文件
+     */
+    File downLoadFileFromMinIo(String bucket, String filePath);
+
+    /**
+     * 根据文件md5获取文件路径
+     *
+     * @param fileMd5 文件md5
+     * @param extName 文件扩展名
+     * @return 文件路径
+     */
+    String getFilePathByMd5(String fileMd5, String extName);
 }
