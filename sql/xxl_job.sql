@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : test
+ Source Server         : localhost
  Source Server Type    : MySQL
  Source Server Version : 80032 (8.0.32)
- Source Host           : 192.168.0.103:3306
+ Source Host           : localhost:3306
  Source Schema         : xxl_job
 
  Target Server Type    : MySQL
  Target Server Version : 80032 (8.0.32)
  File Encoding         : 65001
 
- Date: 31/12/2023 17:08:34
+ Date: 20/01/2024 14:34:20
 */
 
 SET NAMES utf8mb4;
@@ -34,7 +34,7 @@ CREATE TABLE `xxl_job_group`  (
 -- ----------------------------
 -- Records of xxl_job_group
 -- ----------------------------
-INSERT INTO `xxl_job_group` VALUES (2, 'media-process-service', '媒资服务执行器', 0, NULL, '2023-12-31 08:16:51');
+INSERT INTO `xxl_job_group` VALUES (2, 'media-process-service', '媒资服务执行器', 0, NULL, '2024-01-20 12:00:36');
 
 -- ----------------------------
 -- Table structure for xxl_job_info
@@ -137,7 +137,7 @@ CREATE TABLE `xxl_job_log_report`  (
   `update_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `i_trigger_day`(`trigger_day` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of xxl_job_log_report
@@ -148,6 +148,9 @@ INSERT INTO `xxl_job_log_report` VALUES (3, '2023-12-26 00:00:00', 0, 0, 0, NULL
 INSERT INTO `xxl_job_log_report` VALUES (4, '2023-12-31 00:00:00', 0, 7, 0, NULL);
 INSERT INTO `xxl_job_log_report` VALUES (5, '2023-12-30 00:00:00', 0, 0, 0, NULL);
 INSERT INTO `xxl_job_log_report` VALUES (6, '2023-12-29 00:00:00', 0, 0, 0, NULL);
+INSERT INTO `xxl_job_log_report` VALUES (7, '2024-01-20 00:00:00', 0, 0, 0, NULL);
+INSERT INTO `xxl_job_log_report` VALUES (8, '2024-01-19 00:00:00', 0, 0, 0, NULL);
+INSERT INTO `xxl_job_log_report` VALUES (9, '2024-01-18 00:00:00', 0, 0, 0, NULL);
 
 -- ----------------------------
 -- Table structure for xxl_job_logglue
