@@ -38,15 +38,15 @@
         from media_process t
         where t.id % #{shardTotal} = #{shardIndex}
           and t.status in ('1', '3')
-          and t.fail_count &lt; 3
+          and t.fail_count &lt; #{failCount}
         limit #{count}
     </select>
 
     <update id="startTask">
         update media_process m
         set m.status = '4'
-        where m.status in ('1', '3')
-          and m.fail_count &lt; 3
-          and m.id = #{id}
+        where m.id = #{id}
+          and m.status in ('1', '3')
+          and m.fail_count &lt; #{failCount}
     </update>
 </mapper>

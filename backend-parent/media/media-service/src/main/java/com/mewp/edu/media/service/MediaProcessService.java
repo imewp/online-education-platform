@@ -1,7 +1,7 @@
 package com.mewp.edu.media.service;
 
-import com.mewp.edu.media.model.po.MediaProcess;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.mewp.edu.media.model.po.MediaProcess;
 
 import java.util.List;
 
@@ -20,17 +20,19 @@ public interface MediaProcessService extends IService<MediaProcess> {
      * @param shardIndex 分片序号
      * @param shardTotal 分片总数
      * @param count      获取记录数
+     * @param failCount  失败次数
      * @return 待处理的媒资文件列表
      */
-    List<MediaProcess> getMeidaProcessList(int shardIndex, int shardTotal, int count);
+    List<MediaProcess> getMeidaProcessList(int shardIndex, int shardTotal, int count, int failCount);
 
     /**
      * 开启一个任务
      *
-     * @param id 任务id
+     * @param id        任务id
+     * @param failCount 失败次数
      * @return true 开启成功，false 开启失败
      */
-    boolean startTask(long id);
+    boolean startTask(long id, int failCount);
 
     /**
      * 保存任务结果

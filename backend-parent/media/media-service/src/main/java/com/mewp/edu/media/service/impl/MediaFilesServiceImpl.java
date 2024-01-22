@@ -334,7 +334,7 @@ public class MediaFilesServiceImpl extends ServiceImpl<MediaFilesMapper, MediaFi
             extension = "";
         }
         //根据扩展名取出 mimeType
-        ContentInfo contentInfo = ContentInfoUtil.findMimeTypeMatch(extension);
+        ContentInfo contentInfo = ContentInfoUtil.findExtensionMatch(extension);
         String mimetype = MediaType.APPLICATION_OCTET_STREAM_VALUE;
         return contentInfo != null ? contentInfo.getMimeType() : mimetype;
     }
@@ -400,7 +400,7 @@ public class MediaFilesServiceImpl extends ServiceImpl<MediaFilesMapper, MediaFi
             IOUtils.copy(stream, fos);
             return minioFile;
         } catch (Exception e) {
-            log.warn(e.getMessage());
+            log.warn(e.getMessage(), e);
         } finally {
             if (fos != null) {
                 try {
@@ -452,14 +452,14 @@ public class MediaFilesServiceImpl extends ServiceImpl<MediaFilesMapper, MediaFi
         String filename = mediaFiles.getFilename();
         // 文件扩展名
         String extension = filename.substring(filename.lastIndexOf("."));
-        //文件 mimeType
+        // 文件 mimeType
         String mimeType = getMimeType(extension);
         log.info("{} 的 mineType为：{}", filename, mimeType);
-        // 如果是avi视频添加到视频待处理表  fixme：接收到文件mineType为application/octet-stream，待解决
+        // 如果是avi视频添加到视频待处理表
         if ("video/x-msvideo".equals(mimeType)) {
             MediaProcess mediaProcess = PoDtoConvertMapper.INSTANCE.mediaFiles2MediaProcess(mediaFiles);
-            mediaProcess.setStatus("1");//未处理
-            mediaProcess.setFailCount(0);
+            mediaProcess.setStatus("1");    // 未处理
+            mediaProcess.setFailCount(0);   // 失败次数
             mediaProcessMapper.insert(mediaProcess);
         }
     }

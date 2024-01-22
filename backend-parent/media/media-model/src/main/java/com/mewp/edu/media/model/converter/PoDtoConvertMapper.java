@@ -6,6 +6,7 @@ import com.mewp.edu.media.model.po.MediaFiles;
 import com.mewp.edu.media.model.po.MediaProcess;
 import com.mewp.edu.media.model.po.MediaProcessHistory;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -23,8 +24,10 @@ public interface PoDtoConvertMapper {
 
     UploadFileResultDTO mediaFiles2UploadFileResultDTO(MediaFiles mediaFiles);
 
+    @Mapping(target = "id", ignore = true)
     MediaProcess mediaFiles2MediaProcess(MediaFiles mediaFiles);
 
+    @Mapping(target = "id", ignore = true)
     MediaProcessHistory mediaProcess2MediaProcessHistory(MediaProcess mediaProcess);
 }
 

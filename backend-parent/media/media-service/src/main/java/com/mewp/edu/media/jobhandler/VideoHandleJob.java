@@ -1,4 +1,4 @@
-package com.mewp.edu.media.service.jobhandler;
+package com.mewp.edu.media.jobhandler;
 
 import com.mewp.edu.media.model.enums.VideoProcessStatusEnum;
 import com.mewp.edu.media.model.po.MediaProcess;
@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 视频处理任务
+ * fixme：优化日志输出，保证log和xxl-job日志输出一致，能够在服务端输出和xxl-job日志管理中记录
  *
  * @author mewp
  * @version 1.0
@@ -41,18 +42,23 @@ public class VideoHandleJob {
         // 分片参数
         int shardTotal = XxlJobHelper.getShardTotal();
         int shardIndex = XxlJobHelper.getShardIndex();
+
+        log.debug("分片参数：当前分片序号 = {}, 总分片数 = {}", shardIndex, shardTotal);
+        XxlJobHelper.log("分片参数：当前分片序号 = {}, 总分片数 = {}", shardIndex, shardTotal);
+
         List<MediaProcess> mediaProcessList;
         int size;
         try {
             // 取出CPU核心数作为一次处理数据的条数
             int processors = Runtime.getRuntime().availableProcessors();
             // 一次处理视频数量不要超过CPU核心数
-            mediaProcessList = mediaProcessService.getMeidaProcessList(shardIndex, shardTotal, processors);
+            mediaProcessList = mediaProcessService.getMeidaProcessList(shardIndex, shardTotal, processors, 3);
             size = mediaProcessList.size();
-            log.info("取出待处理视频任务 {} 条", size);
+            log.debug("取出待处理视频任务 {} 条", size);
             XxlJobHelper.log("取出待处理视频任务 {} 条", size);
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            log.error("视频处理过程中出现异常：{}", e.getMessage(), e);
+            XxlJobHelper.log("视频处理过程中出现异常：{}", e.getMessage());
             return;
         }
         // 启动size个线程的线程池
@@ -65,8 +71,10 @@ public class VideoHandleJob {
                 // 任务id
                 Long taskId = mediaProcess.getId();
                 // 抢占任务
-                boolean b = mediaProcessService.startTask(taskId);
+                boolean b = mediaProcessService.startTask(taskId, 3);
                 if (!b) {
+                    log.debug("抢占任务失败，任务id：{}", taskId);
+                    XxlJobHelper.log("抢占任务失败，任务id：{}", taskId);
                     return;
                 }
                 log.info("开始执行任务，taskId：{}，具体内容为：{}", taskId, mediaProcess);
@@ -101,7 +109,7 @@ public class VideoHandleJob {
                 String result = "";
                 try {
                     // 开始处理视频
-                    XxlJobHelper.log("开始处理视频");
+                    XxlJobHelper.log("开始处理视频...");
                     //fixme： 临时 ffmpeg 安装路径
                     String ffmpegPath = "ffmpeg";
                     Mp4VideoUtil mp4VideoUtil = new Mp4VideoUtil(ffmpegPath, originalFile.getAbsolutePath(),
@@ -118,7 +126,7 @@ public class VideoHandleJob {
                     XxlJobHelper.log("处理视频失败,视频地址:{},错误信息:{}",
                             bucket + " " + filePath, result);
                     mediaProcessService.saveProcessFinishStatus(taskId, VideoProcessStatusEnum.PROCESSING_FAILED.getCode(),
-                            fileId, null, result);
+                            fileId, null, "处理视频失败");
                     return;
                 }
 
@@ -145,7 +153,7 @@ public class VideoHandleJob {
             }
         }));
 
-        //等待,给一个充裕的超时时间,防止无限等待，到达超时时间还没有处理完成则结束任务
+        // 等待,给一个充裕的超时时间,防止无限等待，到达超时时间还没有处理完成则结束任务
         countDownLatch.await(30, TimeUnit.MINUTES);
     }
 }

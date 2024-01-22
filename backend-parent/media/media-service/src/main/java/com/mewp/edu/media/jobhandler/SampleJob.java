@@ -1,4 +1,4 @@
-package com.mewp.edu.media.service.jobhandler;
+package com.mewp.edu.media.jobhandler;
 
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
@@ -41,6 +41,5 @@ public class SampleJob {
                 XxlJobHelper.log("第 {} 片, 忽略", i);
             }
         }
-
     }
 }

@@ -13,6 +13,7 @@ import com.mewp.edu.media.model.po.MediaProcessHistory;
 import com.mewp.edu.media.service.MediaProcessService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -41,27 +42,29 @@ public class MediaProcessServiceImpl extends ServiceImpl<MediaProcessMapper, Med
     }
 
     @Override
-    public List<MediaProcess> getMeidaProcessList(int shardIndex, int shardTotal, int count) {
-        return mediaProcessMapper.selectListByShareIndex(shardIndex, shardTotal, count);
+    public List<MediaProcess> getMeidaProcessList(int shardIndex, int shardTotal, int count, int failCount) {
+        return mediaProcessMapper.selectListByShareIndex(shardTotal, shardIndex, count, failCount);
     }
 
     @Override
-    public boolean startTask(long id) {
-        return mediaProcessMapper.startTask(id) > 0;
+    public boolean startTask(long id, int failCount) {
+        return mediaProcessMapper.startTask(id, failCount) > 0;
     }
 
+    @Transactional
     @Override
     public void saveProcessFinishStatus(Long taskId, String status, String fileId, String url, String errorMsg) {
-        // 查询任务，如果不存在则直接返回
+        // 1. 查询任务，如果不存在则直接返回
         MediaProcess mediaProcess = mediaProcessMapper.selectById(taskId);
         if (Objects.isNull(mediaProcess)) {
             return;
         }
+
         LambdaUpdateWrapper<MediaProcess> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.eq(MediaProcess::getId, taskId);
 
-        // 处理失败，更新任务处理结果
-        if ("3".equals(status)) {
+        // 2. 处理失败，更新任务处理结果
+        if (VideoProcessStatusEnum.PROCESSING_FAILED.getCode().equals(status)) {
             MediaProcess mediaProcessFail = new MediaProcess();
             mediaProcessFail.setStatus(status);
             mediaProcessFail.setErrormsg(errorMsg);
@@ -71,11 +74,11 @@ public class MediaProcessServiceImpl extends ServiceImpl<MediaProcessMapper, Med
             return;
         }
 
-        //处理成功
+        // 3. 处理成功
         MediaFiles mediaFiles = mediaFilesMapper.selectById(fileId);
+        // 更新媒资文件中的访问url
         Optional.ofNullable(mediaFiles).ifPresent(media -> {
             media.setUrl(url);
-            // 更新媒资文件中的访问url
             mediaFilesMapper.updateById(media);
         });
         // 更新任务的url和状态

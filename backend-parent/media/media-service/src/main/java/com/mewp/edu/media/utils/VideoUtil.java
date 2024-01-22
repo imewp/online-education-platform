@@ -34,9 +34,11 @@ public class VideoUtil {
         String sourceTime = getVideoTime(source);
         //取出时分秒
         sourceTime = sourceTime.substring(0, sourceTime.lastIndexOf("."));
+        System.out.println("视频源文件的时长为：" + sourceTime);
         String targetTime = getVideoTime(target);
         //取出时分秒
         targetTime = targetTime.substring(0, targetTime.lastIndexOf("."));
+        System.out.println("视频目标文件的时长为：" + targetTime);
         return sourceTime.equals(targetTime);
     }
 
@@ -138,7 +140,8 @@ public class VideoUtil {
         String ffmpegPath = "ffmpeg";
         VideoUtil videoUtil = new VideoUtil(ffmpegPath);
 //        String videoTime = videoUtil.getVideoTime("/Users/mewp/Downloads/698ce100c1f7a927f1bd2a174cda8ae3..avi");
-        String videoTime = videoUtil.getVideoTime("/Users/mewp/Downloads/Landscapes- Volume 4K (UHD).mp4");
+//        String videoTime = videoUtil.getVideoTime("/Users/mewp/Downloads/Landscapes- Volume 4K (UHD).mp4");
+        String videoTime = videoUtil.getVideoTime("/Users/mewp/Downloads/03_Collection集合常用方法.avi");
         System.out.println(videoTime);
     }
 }
