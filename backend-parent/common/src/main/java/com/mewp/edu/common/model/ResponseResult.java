@@ -15,7 +15,7 @@ import lombok.Data;
 @Data
 public class ResponseResult<T> {
     /**
-     * 编码 0正常 -1错误
+     * 编码： 0 正常 -1 错误
      */
     @ApiModelProperty(value = "编码", dataType = "int")
     private Integer code;
@@ -30,7 +30,7 @@ public class ResponseResult<T> {
      * 响应内容
      */
     @ApiModelProperty(value = "响应内容")
-    private T data;
+    private T result;
 
     public ResponseResult(int code, String msg) {
         this.code = code;
@@ -74,7 +74,7 @@ public class ResponseResult<T> {
         ResponseResult<T> result = new ResponseResult<>();
         result.setCode(-1);
         result.setMsg(msg);
-        result.setData(data);
+        result.setResult(data);
         return result;
     }
 
@@ -86,6 +86,17 @@ public class ResponseResult<T> {
      */
     public static <T> ResponseResult<T> success() {
         return new ResponseResult<>();
+    }
+
+    /**
+     * 正常信息的封装
+     *
+     * @param <T>  数据类型
+     * @param data 结果
+     * @return 响应结果
+     */
+    public static <T> ResponseResult<T> success(T data) {
+        return success(null, data);
     }
 
     /**
@@ -110,7 +121,11 @@ public class ResponseResult<T> {
     public static <T> ResponseResult<T> success(String msg, T data) {
         ResponseResult<T> result = new ResponseResult<>();
         result.setMsg(msg);
-        result.setData(data);
+        result.setResult(data);
         return result;
+    }
+
+    public Boolean isSuccessful() {
+        return this.code == 0;
     }
 }

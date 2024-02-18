@@ -1,8 +1,6 @@
 package com.mewp.edu.media.model.po;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -29,6 +27,7 @@ public class MediaProcessHistory implements Serializable {
      * 主键
      */
     @ApiModelProperty(value = "主键", dataType = "int")
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**

@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 本地
+ Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80017 (8.0.17)
+ Source Server Version : 80032 (8.0.32)
  Source Host           : localhost:3306
  Source Schema         : edu-system
 
  Target Server Type    : MySQL
- Target Server Version : 80017 (8.0.17)
+ Target Server Version : 80032 (8.0.32)
  File Encoding         : 65001
 
- Date: 20/08/2023 23:51:11
+ Date: 20/01/2024 14:34:09
 */
 
 SET NAMES utf8mb4;
@@ -22,7 +22,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `dictionary`;
 CREATE TABLE `dictionary`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id标识',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id标识',
   `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '数据字典名称',
   `code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '数据字典代码',
   `item_values` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '数据字典项--json格式\n  ',

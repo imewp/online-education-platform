@@ -5,7 +5,7 @@ spring:
     active: dev
   cloud:
     nacos:
-      server-addr: 192.168.3.156:8848
+      server-addr: 192.168.0.150:8848
       discovery:
         namespace: ${spring.profiles.active}
         group: backend-parent

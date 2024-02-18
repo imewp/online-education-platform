@@ -20,12 +20,12 @@ import java.util.*;
  */
 public class DateUtil {
 
-    private static final String YYYY_MM_DD_HH_MM_SS_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    private static final String YYYY_MM_DD_FORMAT = "yyyy-MM-dd";
-    private static final String YYYYMMDD_FORMAT = "yyyyMMdd";
-    private static final String HHMMSS_FORMAT = "HHmmss";
-    private static final String YYYYMM_FORMAT = "yyyyMM";
-    private static final String YYYY_MM_FORMAT = "yyyy_MM";
+    public static final String YYYY_MM_DD_HH_MM_SS_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static final String YYYY_MM_DD_FORMAT = "yyyy-MM-dd";
+    public static final String YYYYMMDD_FORMAT = "yyyyMMdd";
+    public static final String HHMMSS_FORMAT = "HHmmss";
+    public static final String YYYYMM_FORMAT = "yyyyMM";
+    public static final String YYYY_MM_FORMAT = "yyyy_MM";
 
     public DateUtil() {
     }

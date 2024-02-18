@@ -39,6 +39,7 @@ public class GlobalExceptionHandler {
         String className = stackTraceElement.getClassName();
         String methodName = stackTraceElement.getMethodName();
         log.error("系统异常：【{}】，发生异常的类：【{}】，方法：【{}】", e.getErrMessage(), className, methodName);
+        log.error(e.getMessage(), e);
         //解析异常信息
         return new RestErrorResponse(e.getErrMessage());
     }

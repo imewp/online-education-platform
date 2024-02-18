@@ -101,6 +101,4 @@ public class MqMessageHistory implements Serializable {
     private String stageState3;
 
     private String stageState4;
-
-
 }

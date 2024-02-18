@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 本地
+ Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80017
+ Source Server Version : 80032 (8.0.32)
  Source Host           : localhost:3306
  Source Schema         : edu-content
 
  Target Server Type    : MySQL
- Target Server Version : 80017
+ Target Server Version : 80032 (8.0.32)
  File Encoding         : 65001
 
- Date: 14/08/2023 23:10:26
+ Date: 20/01/2024 14:33:52
 */
 
 SET NAMES utf8mb4;
@@ -22,8 +22,8 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `course_audit`;
 CREATE TABLE `course_audit`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `course_id` bigint(20) NOT NULL COMMENT '课程id',
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `course_id` bigint NOT NULL COMMENT '课程id',
   `audit_mind` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '审核意见',
   `audit_status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '审核状态',
   `audit_people` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '审核人',
@@ -40,32 +40,32 @@ CREATE TABLE `course_audit`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `course_base`;
 CREATE TABLE `course_base`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `company_id` bigint(20) NOT NULL COMMENT '机构ID',
-  `company_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '机构名称',
-  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '课程名称',
-  `users` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '适用人群',
-  `tags` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '课程标签',
-  `mt` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '大分类',
-  `st` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '小分类',
-  `grade` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '课程等级',
-  `teachmode` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '教育模式(common普通，record 录播，live直播等）',
-  `description` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '课程介绍',
-  `pic` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '课程图片',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `company_id` bigint NOT NULL COMMENT '机构ID',
+  `company_name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '机构名称',
+  `name` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '课程名称',
+  `users` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '适用人群',
+  `tags` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '课程标签',
+  `mt` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '大分类',
+  `st` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '小分类',
+  `grade` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '课程等级',
+  `teachmode` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '教育模式(common普通，record 录播，live直播等）',
+  `description` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL COMMENT '课程介绍',
+  `pic` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '课程图片',
   `create_date` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `change_date` datetime NULL DEFAULT NULL COMMENT '修改时间',
-  `create_people` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `change_people` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `audit_status` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '审核状态',
-  `status` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '1' COMMENT '课程发布状态 未发布  已发布 下线',
+  `create_people` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `change_people` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `audit_status` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '审核状态',
+  `status` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '1' COMMENT '课程发布状态 未发布  已发布 下线',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 122 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '课程基本信息' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 122 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '课程基本信息' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of course_base
 -- ----------------------------
 INSERT INTO `course_base` VALUES (1, 1232141425, '', 'JAVA8/9/10新特性讲解', 'java爱好者,有一定java基础', '有个java 版本变化的新内容，帮助大家使用最新的思想和工具', '1', '1-3-2', '204002', '200002', NULL, 'https://cdn.educba.com/academy/wp-content/uploads/2018/08/Spring-BOOT-Interview-questions.jpg', '2019-09-03 17:48:19', '2022-09-17 16:47:29', '1', NULL, '202004', '203001');
-INSERT INTO `course_base` VALUES (2, 1232141425, 'Test1', '测试课程01', 'IT爱好者IT爱好者IT爱好者IT爱好者IT爱好者IT爱好者IT爱好者IT爱好者', '课程标签', '1-1', '1-1-1', '204001', '200002', '测试课程测试课程测试课程测试课程测试课程测试课程测试课程测试课程测试课程测试课程测试课程测试课程测试课程测试课程测试课程测试课程', '/mediafiles/2022/09/18/a16da7a132559daf9e1193166b3e7f52.jpg', '2019-09-04 08:49:26', '2022-09-18 15:01:47', NULL, NULL, '202004', '203002');
+INSERT INTO `course_base` VALUES (2, 1232141425, 'Test1', '测试课程01', 'IT爱好者IT爱好者IT爱好者IT爱好者IT爱好者IT爱好者IT爱好者IT爱好者', '课程标签', '1-1', '1-1-1', '204001', '200002', '测试课程测试课程测试课程测试课程测试课程测试课程测试课程测试课程测试课程测试课程测试课程测试课程测试课程测试课程测试课程测试课程', '/mediafiles/2022/09/18/a16da7a132559daf9e1193166b3e7f52.jpg', '2019-09-04 08:49:26', '2023-12-17 15:58:25', NULL, NULL, '202004', '203002');
 INSERT INTO `course_base` VALUES (7, 1232141425, 'Test3', 'wode24', '高级程师', NULL, '1', '1-3-2', '204003', '200002', NULL, 'https://cdn.educba.com/academy/wp-content/uploads/2018/08/Spring-BOOT-Interview-questions.jpg', '2019-09-04 09:56:19', NULL, NULL, NULL, '202004', '203001');
 INSERT INTO `course_base` VALUES (18, 1232141425, NULL, 'java零基础入门v2.0', 'java小白java小白java小白java小白', 'aa', '1-3', '1-3-2', '200001', '200002', 'java零基础入门v2.0java零基础入门v2.0java零基础入门v2.0java零基础入门v2.0', '/mediafiles/2022/12/18/a61805e1360ab946def5471aaefc0a98.jpg', '2019-09-04 09:56:19', '2022-12-18 12:19:10', NULL, NULL, '202004', '203002');
 INSERT INTO `course_base` VALUES (22, 1232141425, NULL, '大数据2', '具有一定的java基础', NULL, '1-6', '1-6-1', '200001', '200002', '111111大数据大数据大数据大数据大数据大数据大数据大数据大数据大数据大数据大数据大数据大数据大数据大数据大数据大数据大数据大数据大数据大数据大数据大数据大数据大数据大数据大数据大数据大数据大数据大数据', 'https://cdn.educba.com/academy/wp-content/uploads/2018/08/Spring-BOOT-Interview-questions.jpg', '2019-09-04 09:56:19', '2022-09-16 07:59:57', NULL, NULL, '202001', '203001');
@@ -131,15 +131,15 @@ INSERT INTO `course_base` VALUES (121, 1232141425, NULL, 'Spring Cloud 开发实
 -- ----------------------------
 DROP TABLE IF EXISTS `course_category`;
 CREATE TABLE `course_category`  (
-  `id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
-  `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '分类名称',
-  `label` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '分类标签默认和名称一样',
-  `parentid` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '父结点id（第一级的父节点是0，自关联字段id）',
-  `is_show` tinyint(4) NULL DEFAULT NULL COMMENT '是否显示',
-  `orderby` int(11) NULL DEFAULT NULL COMMENT '排序字段',
-  `is_leaf` tinyint(4) NULL DEFAULT NULL COMMENT '是否叶子',
+  `id` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '主键',
+  `name` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '分类名称',
+  `label` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '分类标签默认和名称一样',
+  `parentid` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '0' COMMENT '父结点id（第一级的父节点是0，自关联字段id）',
+  `is_show` tinyint NULL DEFAULT NULL COMMENT '是否显示',
+  `orderby` int NULL DEFAULT NULL COMMENT '排序字段',
+  `is_leaf` tinyint NULL DEFAULT NULL COMMENT '是否叶子',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '课程分类' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '课程分类' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of course_category
@@ -294,16 +294,16 @@ INSERT INTO `course_category` VALUES ('1-9-9', '嵌入式', '嵌入式', '1-9', 
 -- ----------------------------
 DROP TABLE IF EXISTS `course_market`;
 CREATE TABLE `course_market`  (
-  `id` bigint(20) NOT NULL COMMENT '主键，课程id',
-  `charge` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '收费规则，对应数据字典',
+  `id` bigint NOT NULL COMMENT '主键，课程id',
+  `charge` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '收费规则，对应数据字典',
   `price` float(10, 2) NULL DEFAULT NULL COMMENT '现价',
   `original_price` float(10, 2) NULL DEFAULT NULL COMMENT '原价',
-  `qq` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '咨询qq',
-  `wechat` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '微信',
-  `phone` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '电话',
-  `valid_days` int(11) NULL DEFAULT NULL COMMENT '有效期天数',
+  `qq` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '咨询qq',
+  `wechat` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '微信',
+  `phone` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '电话',
+  `valid_days` int NULL DEFAULT NULL COMMENT '有效期天数',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '课程营销信息' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '课程营销信息' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of course_market
@@ -327,35 +327,35 @@ INSERT INTO `course_market` VALUES (121, '201001', 1.00, 100.00, '2323232', '323
 -- ----------------------------
 DROP TABLE IF EXISTS `course_publish`;
 CREATE TABLE `course_publish`  (
-  `id` bigint(20) NOT NULL COMMENT '主键',
-  `company_id` bigint(20) NOT NULL COMMENT '机构ID',
-  `company_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '公司名称',
-  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '课程名称',
-  `users` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '适用人群',
-  `tags` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '标签',
-  `username` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `mt` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '大分类',
-  `mt_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '大分类名称',
-  `st` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '小分类',
-  `st_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '小分类名称',
-  `grade` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '课程等级',
-  `teachmode` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '教育模式',
-  `pic` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '课程图片',
-  `description` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '课程介绍',
-  `market` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '课程营销信息，json格式',
-  `teachplan` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '所有课程计划，json格式',
-  `teachers` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '教师信息，json格式',
+  `id` bigint NOT NULL COMMENT '主键',
+  `company_id` bigint NOT NULL COMMENT '机构ID',
+  `company_name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '公司名称',
+  `name` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '课程名称',
+  `users` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '适用人群',
+  `tags` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '标签',
+  `username` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `mt` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '大分类',
+  `mt_name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '大分类名称',
+  `st` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '小分类',
+  `st_name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '小分类名称',
+  `grade` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '课程等级',
+  `teachmode` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '教育模式',
+  `pic` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '课程图片',
+  `description` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL COMMENT '课程介绍',
+  `market` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL COMMENT '课程营销信息，json格式',
+  `teachplan` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL COMMENT '所有课程计划，json格式',
+  `teachers` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL COMMENT '教师信息，json格式',
   `create_date` datetime NULL DEFAULT NULL COMMENT '发布时间',
   `online_date` datetime NULL DEFAULT NULL COMMENT '上架时间',
   `offline_date` datetime NULL DEFAULT NULL COMMENT '下架时间',
-  `status` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '1' COMMENT '发布状态',
-  `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `charge` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '收费规则，对应数据字典--203',
+  `status` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '1' COMMENT '发布状态',
+  `remark` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `charge` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '收费规则，对应数据字典--203',
   `price` float(10, 2) NULL DEFAULT NULL COMMENT '现价',
   `original_price` float(10, 2) NULL DEFAULT NULL COMMENT '原价',
-  `valid_days` int(11) NULL DEFAULT NULL COMMENT '课程有效期天数',
+  `valid_days` int NULL DEFAULT NULL COMMENT '课程有效期天数',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '课程发布' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '课程发布' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of course_publish
@@ -370,34 +370,34 @@ INSERT INTO `course_publish` VALUES (121, 1232141425, NULL, 'Spring Cloud 开发
 -- ----------------------------
 DROP TABLE IF EXISTS `course_publish_pre`;
 CREATE TABLE `course_publish_pre`  (
-  `id` bigint(20) NOT NULL COMMENT '主键',
-  `company_id` bigint(20) NOT NULL COMMENT '机构ID',
-  `company_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '公司名称',
-  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '课程名称',
-  `users` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '适用人群',
-  `tags` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '标签',
-  `username` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建人',
-  `mt` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '大分类',
-  `mt_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '大分类名称',
-  `st` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '小分类',
-  `st_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '小分类名称',
-  `grade` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '课程等级',
-  `teachmode` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '教育模式',
-  `pic` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '课程图片',
-  `description` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '课程介绍',
-  `market` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '课程营销信息，json格式',
-  `teachplan` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '所有课程计划，json格式',
-  `teachers` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '教师信息，json格式',
+  `id` bigint NOT NULL COMMENT '主键',
+  `company_id` bigint NOT NULL COMMENT '机构ID',
+  `company_name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '公司名称',
+  `name` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '课程名称',
+  `users` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '适用人群',
+  `tags` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '标签',
+  `username` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `mt` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '大分类',
+  `mt_name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '大分类名称',
+  `st` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '小分类',
+  `st_name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '小分类名称',
+  `grade` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '课程等级',
+  `teachmode` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '教育模式',
+  `pic` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '课程图片',
+  `description` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL COMMENT '课程介绍',
+  `market` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL COMMENT '课程营销信息，json格式',
+  `teachplan` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL COMMENT '所有课程计划，json格式',
+  `teachers` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL COMMENT '教师信息，json格式',
   `create_date` datetime NULL DEFAULT NULL COMMENT '提交时间',
   `audit_date` datetime NULL DEFAULT NULL COMMENT '审核时间',
-  `status` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '1' COMMENT '状态',
-  `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `charge` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '收费规则，对应数据字典--203',
+  `status` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '1' COMMENT '状态',
+  `remark` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `charge` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '收费规则，对应数据字典--203',
   `price` float(10, 2) NULL DEFAULT NULL COMMENT '现价',
   `original_price` float(10, 2) NULL DEFAULT NULL COMMENT '原价',
-  `valid_days` int(11) NULL DEFAULT NULL COMMENT '课程有效期天数',
+  `valid_days` int NULL DEFAULT NULL COMMENT '课程有效期天数',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '课程预发布' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '课程预发布' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of course_publish_pre
@@ -408,15 +408,15 @@ CREATE TABLE `course_publish_pre`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `course_teacher`;
 CREATE TABLE `course_teacher`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `course_id` bigint(20) NULL DEFAULT NULL COMMENT '课程标识',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `course_id` bigint NULL DEFAULT NULL COMMENT '课程标识',
   `teacher_name` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '教师标识',
   `position` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '教师职位',
   `introduction` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '教师简介',
   `photograph` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '照片',
   `create_date` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `courseid_teacherId_unique`(`course_id`, `teacher_name`) USING BTREE
+  UNIQUE INDEX `courseid_teacherId_unique`(`course_id` ASC, `teacher_name` ASC) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '课程-教师关系表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -447,23 +447,23 @@ INSERT INTO `course_teacher` VALUES (20, 74, '张老师', 'java老师', '讲课�
 -- ----------------------------
 DROP TABLE IF EXISTS `mq_message`;
 CREATE TABLE `mq_message`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '消息id',
-  `message_type` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '消息类型代码: course_publish ,  media_test',
-  `business_key1` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '关联业务信息',
-  `business_key2` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '关联业务信息',
-  `business_key3` varchar(512) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '关联业务信息',
-  `execute_num` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '通知次数',
-  `state` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '处理状态，0:初始，1:成功',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '消息id',
+  `message_type` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '消息类型代码: course_publish ,  media_test',
+  `business_key1` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '关联业务信息',
+  `business_key2` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '关联业务信息',
+  `business_key3` varchar(512) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '关联业务信息',
+  `execute_num` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '通知次数',
+  `state` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '0' COMMENT '处理状态，0:初始，1:成功',
   `returnfailure_date` datetime NULL DEFAULT NULL COMMENT '回复失败时间',
   `returnsuccess_date` datetime NULL DEFAULT NULL COMMENT '回复成功时间',
-  `returnfailure_msg` varchar(2048) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '回复失败内容',
+  `returnfailure_msg` varchar(2048) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '回复失败内容',
   `execute_date` datetime NULL DEFAULT NULL COMMENT '最近通知时间',
-  `stage_state1` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '阶段1处理状态, 0:初始，1:成功',
-  `stage_state2` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '阶段2处理状态, 0:初始，1:成功',
-  `stage_state3` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '阶段3处理状态, 0:初始，1:成功',
-  `stage_state4` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '阶段4处理状态, 0:初始，1:成功',
+  `stage_state1` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '0' COMMENT '阶段1处理状态, 0:初始，1:成功',
+  `stage_state2` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '0' COMMENT '阶段2处理状态, 0:初始，1:成功',
+  `stage_state3` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '0' COMMENT '阶段3处理状态, 0:初始，1:成功',
+  `stage_state4` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '0' COMMENT '阶段4处理状态, 0:初始，1:成功',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of mq_message
@@ -474,23 +474,23 @@ CREATE TABLE `mq_message`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `mq_message_history`;
 CREATE TABLE `mq_message_history`  (
-  `id` bigint(20) NOT NULL COMMENT '消息id',
-  `message_type` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '消息类型代码',
-  `business_key1` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '关联业务信息',
-  `business_key2` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '关联业务信息',
-  `business_key3` varchar(512) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '关联业务信息',
-  `execute_num` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '通知次数',
+  `id` bigint NOT NULL COMMENT '消息id',
+  `message_type` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '消息类型代码',
+  `business_key1` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '关联业务信息',
+  `business_key2` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '关联业务信息',
+  `business_key3` varchar(512) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '关联业务信息',
+  `execute_num` int UNSIGNED NULL DEFAULT NULL COMMENT '通知次数',
   `state` int(10) UNSIGNED ZEROFILL NULL DEFAULT NULL COMMENT '处理状态，0:初始，1:成功，2:失败',
   `returnfailure_date` datetime NULL DEFAULT NULL COMMENT '回复失败时间',
   `returnsuccess_date` datetime NULL DEFAULT NULL COMMENT '回复成功时间',
-  `returnfailure_msg` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '回复失败内容',
+  `returnfailure_msg` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '回复失败内容',
   `execute_date` datetime NULL DEFAULT NULL COMMENT '最近通知时间',
-  `stage_state1` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `stage_state2` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `stage_state3` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `stage_state4` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `stage_state1` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
+  `stage_state2` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
+  `stage_state3` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
+  `stage_state4` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of mq_message_history
@@ -507,24 +507,24 @@ INSERT INTO `mq_message_history` VALUES (20, 'course_publish', '18', NULL, NULL,
 -- ----------------------------
 DROP TABLE IF EXISTS `teachplan`;
 CREATE TABLE `teachplan`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `pname` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '课程计划名称',
-  `parentid` bigint(20) NOT NULL COMMENT '课程计划父级Id',
-  `grade` smallint(6) NOT NULL COMMENT '层级，分为1、2、3级',
-  `media_type` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '课程类型:1视频、2文档',
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `pname` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '课程计划名称',
+  `parentid` bigint NOT NULL COMMENT '课程计划父级Id',
+  `grade` smallint NOT NULL COMMENT '层级，分为1、2、3级',
+  `media_type` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '课程类型:1视频、2文档',
   `start_time` datetime NULL DEFAULT NULL COMMENT '开始直播时间',
   `end_time` datetime NULL DEFAULT NULL COMMENT '直播结束时间',
-  `description` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '章节及课程时介绍',
-  `timelength` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '时长，单位时:分:秒',
-  `orderby` int(11) NULL DEFAULT 0 COMMENT '排序字段',
-  `course_id` bigint(20) NOT NULL COMMENT '课程标识',
-  `course_pub_id` bigint(20) NULL DEFAULT NULL COMMENT '课程发布标识',
-  `status` int(11) NOT NULL DEFAULT 1 COMMENT '状态（1正常  0删除）',
-  `is_preview` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '是否支持试学或预览（试看）',
+  `description` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '章节及课程时介绍',
+  `timelength` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '时长，单位时:分:秒',
+  `orderby` int NULL DEFAULT 0 COMMENT '排序字段',
+  `course_id` bigint NOT NULL COMMENT '课程标识',
+  `course_pub_id` bigint NULL DEFAULT NULL COMMENT '课程发布标识',
+  `status` int NOT NULL DEFAULT 1 COMMENT '状态（1正常  0删除）',
+  `is_preview` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT '0' COMMENT '是否支持试学或预览（试看）',
   `create_date` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `change_date` datetime NULL DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 290 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '课程计划' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 290 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '课程计划' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of teachplan
@@ -689,7 +689,7 @@ INSERT INTO `teachplan` VALUES (263, '新小节名称 [点击修改]', 255, 2, N
 INSERT INTO `teachplan` VALUES (264, '新章名称 [点击修改]', 0, 1, NULL, NULL, NULL, NULL, NULL, 2, 1, NULL, 1, '0', NULL, NULL);
 INSERT INTO `teachplan` VALUES (265, '新小节名称 [点击修改]', 264, 2, NULL, NULL, NULL, NULL, NULL, 1, 1, NULL, 1, '0', NULL, NULL);
 INSERT INTO `teachplan` VALUES (266, '第1章', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, 2, NULL, 1, '0', NULL, NULL);
-INSERT INTO `teachplan` VALUES (267, '第1节', 266, 2, NULL, NULL, NULL, NULL, NULL, 1, 2, NULL, 1, '0', NULL, NULL);
+INSERT INTO `teachplan` VALUES (267, '第1节', 266, 2, NULL, NULL, NULL, NULL, NULL, 1, 2, NULL, 1, '0', NULL, '2023-12-17 15:58:34');
 INSERT INTO `teachplan` VALUES (268, '1.配置管理', 0, 1, NULL, NULL, NULL, NULL, NULL, 1, 117, NULL, 1, '0', NULL, NULL);
 INSERT INTO `teachplan` VALUES (269, '1.1 什么是配置中心', 268, 2, NULL, NULL, NULL, NULL, NULL, 1, 117, NULL, 1, '0', NULL, NULL);
 INSERT INTO `teachplan` VALUES (270, '1.2Nacos简介', 268, 2, NULL, NULL, NULL, NULL, NULL, 2, 117, NULL, 1, '0', NULL, NULL);
@@ -718,10 +718,10 @@ INSERT INTO `teachplan` VALUES (289, '熔断降级', 284, 2, NULL, NULL, NULL, N
 -- ----------------------------
 DROP TABLE IF EXISTS `teachplan_media`;
 CREATE TABLE `teachplan_media`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
   `media_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '媒资文件id',
-  `teachplan_id` bigint(20) NOT NULL COMMENT '课程计划标识',
-  `course_id` bigint(20) NOT NULL COMMENT '课程标识',
+  `teachplan_id` bigint NOT NULL COMMENT '课程计划标识',
+  `course_id` bigint NOT NULL COMMENT '课程标识',
   `media_fileName` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '媒资文件原始名称',
   `create_date` datetime NULL DEFAULT NULL,
   `create_people` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
@@ -757,13 +757,13 @@ INSERT INTO `teachplan_media` VALUES (57, '1f229319d6fed3431d2f9d06193a433b', 28
 -- ----------------------------
 DROP TABLE IF EXISTS `teachplan_work`;
 CREATE TABLE `teachplan_work`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `work_id` bigint(20) NOT NULL COMMENT '作业信息标识',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `work_id` bigint NOT NULL COMMENT '作业信息标识',
   `work_title` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '作业标题',
-  `teachplan_id` bigint(20) NOT NULL COMMENT '课程计划标识',
-  `course_id` bigint(20) NULL DEFAULT NULL COMMENT '课程标识',
+  `teachplan_id` bigint NOT NULL COMMENT '课程计划标识',
+  `course_id` bigint NULL DEFAULT NULL COMMENT '课程标识',
   `create_date` datetime NULL DEFAULT NULL,
-  `course_pub_id` bigint(20) NULL DEFAULT NULL,
+  `course_pub_id` bigint NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
