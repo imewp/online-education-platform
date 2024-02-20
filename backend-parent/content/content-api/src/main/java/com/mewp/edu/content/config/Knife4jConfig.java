@@ -1,8 +1,9 @@
 package com.mewp.edu.content.config;
 
-import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -20,15 +21,14 @@ import java.util.ArrayList;
  */
 @Configuration
 @EnableSwagger2WebMvc
-@EnableKnife4j
+@Import(BeanValidatorPluginsConfiguration.class)
 public class Knife4jConfig {
     @Bean
     public Docket docket() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
-                .groupName("内容管理服务")  // 配置api文档的分组
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.mewp.edu.content")) //配置扫描路径
+                .apis(RequestHandlerSelectors.basePackage("com.mewp.edu.content.api")) //配置扫描路径
                 .paths(PathSelectors.any()) // 配置过滤哪些
                 .build();
     }

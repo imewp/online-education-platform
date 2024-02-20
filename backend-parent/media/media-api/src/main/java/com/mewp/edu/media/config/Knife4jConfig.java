@@ -26,7 +26,6 @@ public class Knife4jConfig {
     public Docket docket() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
-                .groupName("媒资管理服务")  // 配置api文档的分组
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.mewp.edu.media")) //配置扫描路径
                 .paths(PathSelectors.any()) // 配置过滤哪些

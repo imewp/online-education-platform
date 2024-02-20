@@ -1,7 +1,9 @@
 package com.mewp.edu.content.api;
 
 import com.mewp.edu.content.model.dto.AddOrUpdateTeachPlanDTO;
+import com.mewp.edu.content.model.dto.BindTeachPlanMediaDTO;
 import com.mewp.edu.content.model.dto.TeachPlanDTO;
+import com.mewp.edu.content.service.TeachplanMediaService;
 import com.mewp.edu.content.service.TeachplanService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -31,6 +33,9 @@ public class TeachPlanController {
 
     @Resource
     private TeachplanService teachplanService;
+
+    @Resource
+    private TeachplanMediaService teachplanMediaService;
 
     @ApiOperation("查询课程计划树形结构")
     @ApiImplicitParam(name = "courseId", value = "课程ID", paramType = "path", dataType = "long", required = true)
@@ -62,5 +67,25 @@ public class TeachPlanController {
     public void moveTeachPlan(@PathVariable("moveType") String moveType,
                               @PathVariable("id") Long id) {
         teachplanService.moveTeachPlan(moveType, id);
+    }
+
+
+    @ApiOperation("课程计划和媒资信息绑定")
+    @PostMapping("/association/media")
+    public void associationMedia(@RequestBody @Validated BindTeachPlanMediaDTO bindTeachPlanMediaDto) {
+        teachplanMediaService.associationMedia(bindTeachPlanMediaDto);
+    }
+
+    @ApiOperation("课程计划解除视频绑定")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "teachPlanId", value = "课程计划ID", paramType = "path",
+                    dataType = "long", required = true),
+            @ApiImplicitParam(name = "mediaId", value = "媒资文件id", paramType = "path",
+                    dataType = "string", required = true)
+    })
+    @DeleteMapping("/association/media/{teachPlanId}/{mediaId}")
+    public void deleteAssociationMedia(@PathVariable("teachPlanId") Long teachPlanId,
+                                       @PathVariable("mediaId") String mediaId) {
+        teachplanMediaService.deleteAssociationMedia(teachPlanId, mediaId);
     }
 }

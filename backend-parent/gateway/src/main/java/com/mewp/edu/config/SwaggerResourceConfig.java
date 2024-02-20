@@ -14,16 +14,16 @@ import java.util.List;
 /**
  * @author mewp
  * @version 1.0
- * @date 2023/9/3 14:29
+ * @date 2024/2/18 21:40
  */
 @Component
 @Primary
-public class SwaggerProvider implements SwaggerResourcesProvider {
-    public static final String API_URI = "v2/api-docs";
+public class SwaggerResourceConfig implements SwaggerResourcesProvider {
+
     private final RouteLocator routeLocator;
     private final GatewayProperties gatewayProperties;
 
-    public SwaggerProvider(RouteLocator routeLocator, GatewayProperties gatewayProperties) {
+    public SwaggerResourceConfig(RouteLocator routeLocator, GatewayProperties gatewayProperties) {
         this.routeLocator = routeLocator;
         this.gatewayProperties = gatewayProperties;
     }
@@ -34,11 +34,12 @@ public class SwaggerProvider implements SwaggerResourcesProvider {
         List<String> routes = new ArrayList<>();
         routeLocator.getRoutes().subscribe(route -> routes.add(route.getId()));
         gatewayProperties.getRoutes().stream().filter(routeDefinition -> routes.contains(routeDefinition.getId()))
-                .forEach(routeDefinition -> routeDefinition.getPredicates().stream()
+                .forEach(route -> route.getPredicates().stream()
                         .filter(predicateDefinition -> ("Path").equalsIgnoreCase(predicateDefinition.getName()))
-                        .forEach(predicateDefinition -> resources.add(swaggerResource(routeDefinition.getId(),
+                        .forEach(predicateDefinition -> resources.add(swaggerResource(route.getId(),
                                 predicateDefinition.getArgs().get(NameUtils.GENERATED_NAME_PREFIX + "0")
-                                        .replace("**", API_URI)))));
+                                        .replace("**", "v2/api-docs")))));
+
         return resources;
     }
 
