@@ -25,3 +25,6 @@ spring:
           - data-id: logging-${spring.profiles.active}.yaml
             group: backend-common
             refresh: true
+          - data-id: freemarker-config-${spring.profiles.active}.yaml
+            group: backend-common
+            refresh: true

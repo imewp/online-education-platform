@@ -26,7 +26,7 @@ public class PageParams {
     /**
      * 默认每页记录数
      */
-    public static final long DEFAULT_PAGE_SIZE = 1L;
+    public static final long DEFAULT_PAGE_SIZE = 10L;
 
     /**
      * 当前页码
