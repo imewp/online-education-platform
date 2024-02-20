@@ -28,7 +28,9 @@ import java.util.stream.Stream;
  */
 public class MinioTest {
 
-    // Create a minioClient with the MinIO server playground, its access key and secret key.
+    /**
+     * 使用 MinIO 服务器 playground、其访问密钥和密钥创建一个 minioClient
+     */
     MinioClient minioClient =
             MinioClient.builder()
                     .endpoint("http://192.168.3.64:9000")

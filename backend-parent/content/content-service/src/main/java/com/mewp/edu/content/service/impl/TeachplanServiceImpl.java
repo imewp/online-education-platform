@@ -63,10 +63,15 @@ public class TeachplanServiceImpl extends ServiceImpl<TeachplanMapper, Teachplan
     @Override
     public void deleteTeachPlan(Long id) {
         Teachplan teachplan = findTeachPlan(id);
-        Long parentid = teachplan.getParentid();
+        if (Objects.isNull(teachplan)) {
+            CustomException.cast("未找到对应的课程计划信息");
+        }
+        Long parentId = teachplan.getParentid();
+        // 判断当前课程计划是章还是节
         Integer grade = teachplan.getGrade();
-        //第一级别大章节
-        if (parentid == 0 && grade == 1) {
+        // 第一级大章节
+        if (parentId == 0 && grade == 1) {
+            // 查询当前课程计划下是否有小节
             LambdaQueryWrapper<Teachplan> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(Teachplan::getParentid, id);
             Integer count = baseMapper.selectCount(queryWrapper);
@@ -76,12 +81,13 @@ public class TeachplanServiceImpl extends ServiceImpl<TeachplanMapper, Teachplan
             baseMapper.deleteById(id);
             return;
         }
-        //第二级别小章节
+        // 第二级小章节
         if (grade == 2) {
-            //todo：需要判断是否同时删除（当前未存储媒体信息，暂未做处理）
+            // 课程计划为节，删除该小节课程计划
             baseMapper.deleteById(id);
             LambdaQueryWrapper<TeachplanMedia> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(TeachplanMedia::getTeachplanId, id);
+            // 删除媒资信息中对应的teachplanId的数据
             teachplanMediaMapper.delete(queryWrapper);
         }
     }

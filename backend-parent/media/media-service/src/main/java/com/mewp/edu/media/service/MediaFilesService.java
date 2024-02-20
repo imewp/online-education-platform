@@ -1,5 +1,6 @@
 package com.mewp.edu.media.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.mewp.edu.common.model.PageResult;
 import com.mewp.edu.common.model.ResponseResult;
 import com.mewp.edu.common.param.PageParams;
@@ -7,7 +8,6 @@ import com.mewp.edu.media.model.dto.QueryMediaParamsDTO;
 import com.mewp.edu.media.model.dto.UploadFileParamsDTO;
 import com.mewp.edu.media.model.dto.UploadFileResultDTO;
 import com.mewp.edu.media.model.po.MediaFiles;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.io.File;
 
@@ -121,4 +121,12 @@ public interface MediaFilesService extends IService<MediaFiles> {
      * @return 文件路径
      */
     String getFilePathByMd5(String fileMd5, String extName);
+
+    /**
+     * 根据文件ID获取文件信息
+     *
+     * @param mediaId 文件ID
+     * @return 文件信息
+     */
+    MediaFiles getFileById(String mediaId);
 }

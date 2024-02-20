@@ -8,14 +8,19 @@ import com.mewp.edu.media.model.dto.UploadFileResultDTO;
 import com.mewp.edu.media.model.po.MediaFiles;
 import com.mewp.edu.media.service.MediaFilesService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * <p>
@@ -41,15 +46,23 @@ public class MediaFilesController {
         return mediaFilesService.queryMediaFiles(companyId, pageParams, queryMediaParamsDTO);
     }
 
-    @ApiOperation("上传图片")
+    @ApiOperation("上传普通文件")
+    @ApiImplicitParam(name = "filedata", value = "文件", required = true, dataType = "file")
     @PostMapping(value = "/upload/coursefile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public UploadFileResultDTO upload(@RequestPart("filedata") MultipartFile upload) throws IOException {
         Long companyId = 1232141425L;
         UploadFileParamsDTO fileParamsDTO = new UploadFileParamsDTO();
         //文件大小
         fileParamsDTO.setFileSize(upload.getSize());
-        //文件类型 图片
-        fileParamsDTO.setFileType("001001");
+        //文件类型
+        String contentType = upload.getContentType();
+        if (Objects.requireNonNull(contentType).contains("image")) {
+            // 图片
+            fileParamsDTO.setFileType("001001");
+        } else {
+            // 其它
+            fileParamsDTO.setFileType("001003");
+        }
         //文件名
         fileParamsDTO.setFilename(upload.getOriginalFilename());
         //创建临时文件

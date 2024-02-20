@@ -86,7 +86,6 @@ public class MediaFilesServiceImpl extends ServiceImpl<MediaFilesMapper, MediaFi
     @Override
     public UploadFileResultDTO uploadFile(Long companyId, UploadFileParamsDTO fileParamsDTO, String localFilePath) {
         //@Transactional添加在该方法时，如果上传文件过程时间较长那么数据库的事务持续时间就会变长，这样数据库连接释放就慢，最终导致数据库连接不够用。
-
         File file = new File(localFilePath);
         if (!file.exists()) {
             CustomException.cast("文件不存在");
@@ -183,6 +182,7 @@ public class MediaFilesServiceImpl extends ServiceImpl<MediaFilesMapper, MediaFi
                 }
             } catch (Exception e) {
                 log.warn(e.getMessage());
+                return ResponseResult.fail();
             }
         }
         // 文件不存在
@@ -208,6 +208,8 @@ public class MediaFilesServiceImpl extends ServiceImpl<MediaFilesMapper, MediaFi
             }
         } catch (Exception e) {
             log.warn(e.getMessage());
+            // 发生异常时 返回false
+            return ResponseResult.success(false);
         }
         // 分块未存在
         return ResponseResult.success(false);
@@ -226,7 +228,7 @@ public class MediaFilesServiceImpl extends ServiceImpl<MediaFilesMapper, MediaFi
             log.info("上传分块文件成功：{}", path);
             return ResponseResult.success();
         } else {
-            log.info("上传分块{} 文件失败：{}", chunkIndex, path);
+            log.info("上传分块 {} 文件失败：{}", chunkIndex, path);
             return ResponseResult.fail("分片" + chunkIndex + "上传失败");
         }
     }
@@ -413,6 +415,11 @@ public class MediaFilesServiceImpl extends ServiceImpl<MediaFilesMapper, MediaFi
         return null;
     }
 
+    @Override
+    public MediaFiles getFileById(String mediaId) {
+        return mediaFilesMapper.selectById(mediaId);
+    }
+
     /**
      * 清除分块文件
      *
@@ -460,7 +467,10 @@ public class MediaFilesServiceImpl extends ServiceImpl<MediaFilesMapper, MediaFi
             MediaProcess mediaProcess = PoDtoConvertMapper.INSTANCE.mediaFiles2MediaProcess(mediaFiles);
             mediaProcess.setStatus("1");    // 未处理
             mediaProcess.setFailCount(0);   // 失败次数
-            mediaProcessMapper.insert(mediaProcess);
+            int insert = mediaProcessMapper.insert(mediaProcess);
+            if (insert <= 0) {
+                CustomException.cast("保存avi视频到待处理任务失败");
+            }
         }
     }
 }

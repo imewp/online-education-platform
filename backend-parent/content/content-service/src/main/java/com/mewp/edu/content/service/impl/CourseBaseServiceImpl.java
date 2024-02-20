@@ -102,7 +102,7 @@ public class CourseBaseServiceImpl extends ServiceImpl<CourseBaseMapper, CourseB
         if (Objects.isNull(courseBase)) {
             CustomException.cast("课程不存在");
         }
-        //校验本机构只能修改本机构的课程
+        // 校验本机构只能修改本机构的课程
         if (!courseBase.getCompanyId().equals(companyId)) {
             CustomException.cast("本机构只能修改本机构的课程");
         }
@@ -123,7 +123,7 @@ public class CourseBaseServiceImpl extends ServiceImpl<CourseBaseMapper, CourseB
         if (Objects.isNull(courseBase)) {
             CustomException.cast("课程不存在");
         }
-        //校验本机构只能删除本机构的课程
+        // 校验本机构只能删除本机构的课程
         if (!courseBase.getCompanyId().equals(companyId)) {
             CustomException.cast("只允许删除本机构的课程");
         }
@@ -132,17 +132,17 @@ public class CourseBaseServiceImpl extends ServiceImpl<CourseBaseMapper, CourseB
             CustomException.cast("不允许删除该课程");
         }
 
-        //删除课程教师信息
+        // 删除课程教师信息
         LambdaQueryWrapper<CourseTeacher> teacherQueryWrapper = new LambdaQueryWrapper<>();
         teacherQueryWrapper.eq(CourseTeacher::getCourseId, courseId);
         courseTeacherMapper.delete(teacherQueryWrapper);
-        //删除课程计划
+        // 删除课程计划
         LambdaQueryWrapper<Teachplan> teachPlanQueryWrapper = new LambdaQueryWrapper<>();
         teachPlanQueryWrapper.eq(Teachplan::getCourseId, courseId);
         teachplanMapper.delete(teachPlanQueryWrapper);
-        //删除营销信息
+        // 删除营销信息
         courseMarketMapper.deleteById(courseId);
-        //删除课程基本信息
+        // 删除课程基本信息
         baseMapper.deleteById(courseId);
     }
 
