@@ -55,4 +55,12 @@ public interface CoursePublishService extends IService<CoursePublish> {
      * @param file     静态化文件
      */
     void uploadCourseHtml(Long courseId, File file);
+
+    /**
+     * 保存课程索引
+     *
+     * @param courseId 课程id
+     * @return 是否成功
+     */
+    Boolean saveCourseIndex(Long courseId);
 }

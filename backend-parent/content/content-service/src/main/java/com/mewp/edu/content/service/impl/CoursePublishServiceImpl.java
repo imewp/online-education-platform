@@ -7,12 +7,14 @@ import com.mewp.edu.common.exception.CustomException;
 import com.mewp.edu.common.utils.StringUtil;
 import com.mewp.edu.content.config.MultipartSupportConfig;
 import com.mewp.edu.content.feignclient.MediaServiceClient;
+import com.mewp.edu.content.feignclient.SearchServiceClient;
 import com.mewp.edu.content.mapper.CourseBaseMapper;
 import com.mewp.edu.content.mapper.CourseMarketMapper;
 import com.mewp.edu.content.mapper.CoursePublishMapper;
 import com.mewp.edu.content.mapper.CoursePublishPreMapper;
 import com.mewp.edu.content.model.converter.PoDtoConvertMapper;
 import com.mewp.edu.content.model.dto.CourseBaseInfoDTO;
+import com.mewp.edu.content.model.dto.CourseIndex;
 import com.mewp.edu.content.model.dto.CoursePreviewDTO;
 import com.mewp.edu.content.model.dto.TeachPlanDTO;
 import com.mewp.edu.content.model.po.CourseBase;
@@ -28,6 +30,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
@@ -64,6 +67,8 @@ public class CoursePublishServiceImpl extends ServiceImpl<CoursePublishMapper, C
 
     @Resource
     private MediaServiceClient mediaServiceClient;
+    @Resource
+    private SearchServiceClient searchServiceClient;
 
     public CoursePublishServiceImpl(CourseBaseService courseBaseService, TeachplanService teachplanService,
                                     CourseMarketMapper courseMarketMapper, CoursePublishPreMapper coursePublishPreMapper,
@@ -211,6 +216,21 @@ public class CoursePublishServiceImpl extends ServiceImpl<CoursePublishMapper, C
         if (StringUtil.isBlank(content)) {
             CustomException.cast("上传静态文件异常");
         }
+    }
+
+    @Override
+    public Boolean saveCourseIndex(Long courseId) {
+        // 取出课程发布信息
+        CoursePublish coursePublish = coursePublishMapper.selectById(courseId);
+        // 拷贝至课程索引对象
+        CourseIndex courseIndex = new CourseIndex();
+        BeanUtils.copyProperties(coursePublish, courseIndex);
+        // 远程调用搜索服务api 添加课程信息到索引
+        Boolean add = searchServiceClient.add(courseIndex);
+        if (!add) {
+            CustomException.cast("添加索引失败");
+        }
+        return true;
     }
 
     /**

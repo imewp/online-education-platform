@@ -1,10 +1,7 @@
 package com.mewp.edu.content.jobhandler;
 
-import com.mewp.edu.common.exception.CustomException;
 import com.mewp.edu.content.feignclient.SearchServiceClient;
 import com.mewp.edu.content.mapper.CoursePublishMapper;
-import com.mewp.edu.content.model.dto.CourseIndex;
-import com.mewp.edu.content.model.po.CoursePublish;
 import com.mewp.edu.content.service.CoursePublishService;
 import com.mewp.edu.messagesdk.model.po.MqMessage;
 import com.mewp.edu.messagesdk.service.MessageProcessAbstract;
@@ -12,7 +9,6 @@ import com.mewp.edu.messagesdk.service.MqMessageService;
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -107,18 +103,12 @@ public class CoursePublishTask extends MessageProcessAbstract {
             return;
         }
 
-        // 取出课程发布信息
-        CoursePublish coursePublish = coursePublishMapper.selectById(courseId);
-        // 拷贝至课程索引对象
-        CourseIndex courseIndex = new CourseIndex();
-        BeanUtils.copyProperties(coursePublish, courseIndex);
-        // 远程调用搜索服务api添加课程信息到索引
-        Boolean add = searchServiceClient.add(courseIndex);
-        if (!add) {
-            CustomException.cast("添加索引失败");
+        // 远程调用保存课程索引接口，将课程信息上传至ElasticSearch
+        Boolean result = coursePublishService.saveCourseIndex(courseId);
+        if (result) {
+            // 保存第二阶段状态
+            mqMessageService.completedStageTwo(id);
         }
-        // 保存第二阶段状态
-        mqMessageService.completedStageTwo(id);
     }
 
     /**
