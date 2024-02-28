@@ -1,5 +1,10 @@
 package com.mewp.edu.content.jobhandler;
 
+import com.mewp.edu.common.exception.CustomException;
+import com.mewp.edu.content.feignclient.SearchServiceClient;
+import com.mewp.edu.content.mapper.CoursePublishMapper;
+import com.mewp.edu.content.model.dto.CourseIndex;
+import com.mewp.edu.content.model.po.CoursePublish;
 import com.mewp.edu.content.service.CoursePublishService;
 import com.mewp.edu.messagesdk.model.po.MqMessage;
 import com.mewp.edu.messagesdk.service.MessageProcessAbstract;
@@ -7,6 +12,7 @@ import com.mewp.edu.messagesdk.service.MqMessageService;
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -22,11 +28,16 @@ import java.util.concurrent.TimeUnit;
 public class CoursePublishTask extends MessageProcessAbstract {
     private final MqMessageService mqMessageService;
     private final CoursePublishService coursePublishService;
+    private final CoursePublishMapper coursePublishMapper;
+    private final SearchServiceClient searchServiceClient;
 
-    public CoursePublishTask(MqMessageService mqMessageService, CoursePublishService coursePublishService) {
+    public CoursePublishTask(MqMessageService mqMessageService, CoursePublishService coursePublishService,
+                             CoursePublishMapper coursePublishMapper, SearchServiceClient searchServiceClient) {
         super(mqMessageService);
         this.mqMessageService = mqMessageService;
         this.coursePublishService = coursePublishService;
+        this.coursePublishMapper = coursePublishMapper;
+        this.searchServiceClient = searchServiceClient;
     }
 
     @XxlJob("CoursePublishJobHandler")
@@ -96,16 +107,16 @@ public class CoursePublishTask extends MessageProcessAbstract {
             return;
         }
 
-        // todo：手动异常
-        int i = 1 / 0;
-
-        // todo：实现ES存储
-        try {
-            TimeUnit.SECONDS.sleep(2);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        // 取出课程发布信息
+        CoursePublish coursePublish = coursePublishMapper.selectById(courseId);
+        // 拷贝至课程索引对象
+        CourseIndex courseIndex = new CourseIndex();
+        BeanUtils.copyProperties(coursePublish, courseIndex);
+        // 远程调用搜索服务api添加课程信息到索引
+        Boolean add = searchServiceClient.add(courseIndex);
+        if (!add) {
+            CustomException.cast("添加索引失败");
         }
-
         // 保存第二阶段状态
         mqMessageService.completedStageTwo(id);
     }

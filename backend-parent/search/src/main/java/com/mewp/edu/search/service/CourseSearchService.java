@@ -7,22 +7,19 @@ import com.mewp.edu.search.entity.dto.SearchPageResultDTO;
 import com.mewp.edu.search.entity.po.CourseIndex;
 
 /**
+ * 课程搜索service
+ *
  * @author Mr.M
  * @version 1.0
- * @description 课程搜索service
  * @date 2022/9/24 22:40
  */
 public interface CourseSearchService {
-
-
     /**
+     * 搜索课程列表
+     *
      * @param pageParams           分页参数
      * @param searchCourseParamDto 搜索条件
-     * @return com.xuecheng.base.model.PageResult<com.xuecheng.search.po.CourseIndex> 课程列表
-     * @description 搜索课程列表
-     * @author Mr.M
-     * @date 2022/9/24 22:45
+     * @return 课程列表
      */
     SearchPageResultDTO<CourseIndex> queryCoursePubIndex(PageParams pageParams, SearchCourseParamDTO searchCourseParamDto);
-
 }

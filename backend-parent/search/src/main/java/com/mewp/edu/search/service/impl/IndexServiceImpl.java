@@ -49,14 +49,12 @@ public class IndexServiceImpl implements IndexService {
             CustomException.cast("添加索引出错");
         }
         String name = indexResponse.getResult().name();
-        System.out.println(name);
         return name.equalsIgnoreCase("created") || name.equalsIgnoreCase("updated");
 
     }
 
     @Override
     public Boolean updateCourseIndex(String indexName, String id, Object object) {
-
         String jsonString = JSON.toJSONString(object);
         UpdateRequest updateRequest = new UpdateRequest(indexName, id);
         updateRequest.doc(jsonString, XContentType.JSON);
@@ -74,7 +72,6 @@ public class IndexServiceImpl implements IndexService {
 
     @Override
     public Boolean deleteCourseIndex(String indexName, String id) {
-
         //删除索引请求对象
         DeleteRequest deleteRequest = new DeleteRequest(indexName, id);
         //响应对象

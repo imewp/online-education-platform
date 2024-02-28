@@ -2,6 +2,7 @@ package com.mewp.edu.search.entity.dto;
 
 import com.mewp.edu.common.model.PageResult;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
@@ -11,7 +12,8 @@ import java.util.List;
  * @date 2024/2/28 11:06
  */
 @Data
-public class SearchPageResultDTO<T> extends PageResult {
+@EqualsAndHashCode(callSuper = false)
+public class SearchPageResultDTO<T> extends PageResult<T> {
     //大分类列表
     List<String> mtList;
     //小分类列表
