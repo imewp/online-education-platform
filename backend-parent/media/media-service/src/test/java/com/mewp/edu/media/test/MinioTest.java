@@ -110,8 +110,16 @@ public class MinioTest {
             FileOutputStream fos = new FileOutputStream("/Users/mewp/Desktop/test/temp/2015.zip");
             IOUtils.copy(fis, fos);
 
-            //校验文件的完整性，对文件的内容进行MD5  fixme：该方法不正确
-            String sourceMd5 = DigestUtils.md5Hex(fis);
+
+            //校验文件的完整性，对文件的内容进行MD5 todo：需要获取minio指定文件的etag，etag就是文件的MD5
+            StatObjectArgs statObjectArgs = StatObjectArgs.builder()
+                    .bucket("asiatrip")     //桶名
+                    .object("asiaphotos-2015.zip")      //对象名
+                    .build();
+            StatObjectResponse statObjectResponse = minioClient.statObject(statObjectArgs);
+            String sourceMd5 = statObjectResponse.etag();
+            System.out.println("etag = " + sourceMd5);
+
             String targetMd5 = DigestUtils.md5Hex(Files
                     .newInputStream(Paths.get("/Users/mewp/Desktop/test/temp/2015.zip")));
             if (sourceMd5.equals(targetMd5)) {

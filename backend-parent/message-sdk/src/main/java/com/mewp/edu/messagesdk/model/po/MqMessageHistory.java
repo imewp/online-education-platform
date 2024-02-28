@@ -1,5 +1,7 @@
 package com.mewp.edu.messagesdk.model.po;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -22,6 +24,7 @@ public class MqMessageHistory implements Serializable {
     /**
      * 消息id
      */
+    @TableId(value = "id", type = IdType.INPUT)
     private Long id;
 
     /**

@@ -8,6 +8,7 @@ import com.mewp.edu.content.model.dto.CourseBaseInfoDTO;
 import com.mewp.edu.content.model.dto.QueryCourseParamsDTO;
 import com.mewp.edu.content.model.po.CourseBase;
 import com.mewp.edu.content.service.CourseBaseService;
+import com.mewp.edu.content.utils.SecurityUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -50,6 +51,12 @@ public class CourseBaseController {
     @ApiImplicitParam(name = "courseId", value = "课程ID", paramType = "path", dataType = "long", required = true)
     @GetMapping("/{courseId}")
     public CourseBaseInfoDTO queryCourseBaseInfo(@PathVariable("courseId") Long courseId) {
+        // todo：获取用户信息
+//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        System.out.println(principal);
+        SecurityUtil.XcUser user = SecurityUtil.getUser();
+        System.out.println(user);
+
         return courseBaseService.queryCourseBaseInfo(courseId);
     }
 

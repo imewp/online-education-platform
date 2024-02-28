@@ -155,6 +155,7 @@ public class VideoHandleJob {
 
         // 等待,给一个充裕的超时时间,防止无限等待，到达超时时间还没有处理完成则结束任务
         countDownLatch.await(30, TimeUnit.MINUTES);
+        threadPool.shutdown();
     }
 }
 

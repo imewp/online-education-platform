@@ -281,7 +281,7 @@ public class MediaFilesServiceImpl extends ServiceImpl<MediaFilesMapper, MediaFi
         }
 
         //=================================验证Md5=================================
-        //下载合并后的文件
+        //下载合并后的文件 fixme：不需要下载，只需要获取到MinIO中文件的MD5值和参数fileMd5是否一致
         File minioFile = downLoadFileFromMinIo(bucketVideos, mergeFilePath);
         if (Objects.isNull(minioFile)) {
             log.error("下载合并后的文件失败，mergeFilePath = {}", mergeFilePath);

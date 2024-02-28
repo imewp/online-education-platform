@@ -21,7 +21,7 @@ public class UcenterCodeGenerator {
 	//数据库账号
 	private static final String DATA_SOURCE_USER_NAME  = "root";
 	//数据库密码
-	private static final String DATA_SOURCE_PASSWORD  = "mysql";
+	private static final String DATA_SOURCE_PASSWORD  = "root";
 	//生成的表
 	private static final String[] TABLE_NAMES = new String[]{
 			"xc_company",
@@ -47,8 +47,8 @@ public class UcenterCodeGenerator {
 		GlobalConfig gc = new GlobalConfig();
 		gc.setFileOverride(true);
 		//生成路径
-		gc.setOutputDir(System.getProperty("user.dir") + "/xuecheng-plus-generator/src/main/java");
-		gc.setAuthor("itcast");
+		gc.setOutputDir(System.getProperty("user.dir") + "/generator/src/main/java");
+		gc.setAuthor("mewp");
 		gc.setOpen(false);
 		gc.setSwagger2(false);
 		gc.setServiceName("%sService");
@@ -64,7 +64,7 @@ public class UcenterCodeGenerator {
 		// 数据库配置
 		DataSourceConfig dsc = new DataSourceConfig();
 		dsc.setDbType(DbType.MYSQL);
-		dsc.setUrl("jdbc:mysql://192.168.101.65:3306/xcplus_users"
+		dsc.setUrl("jdbc:mysql://192.168.0.150:3306/edu-users"
 				+ "?serverTimezone=UTC&useUnicode=true&useSSL=false&characterEncoding=utf8");
 //		dsc.setDriverName("com.mysql.jdbc.Driver");
 		dsc.setDriverName("com.mysql.cj.jdbc.Driver");
@@ -75,7 +75,7 @@ public class UcenterCodeGenerator {
 		// 包配置
 		PackageConfig pc = new PackageConfig();
 		pc.setModuleName(SERVICE_NAME);
-		pc.setParent("com.xuecheng");
+		pc.setParent("com.mewp.edu");
 
 		pc.setServiceImpl("service.impl");
 		pc.setXml("mapper");

@@ -54,7 +54,7 @@ public class MediaProcess implements Serializable {
     /**
      * 状态,1:未处理，2：处理成功  3处理失败
      */
-    @ApiModelProperty(value = "状态,1:未处理，2：处理成功  3处理失败", dataType = "string")
+    @ApiModelProperty(value = "状态,1:未处理，2：处理成功  3处理失败 4处理中", dataType = "string")
     private String status;
 
     /**

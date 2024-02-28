@@ -49,7 +49,12 @@ public class CourseBaseServiceImpl extends ServiceImpl<CourseBaseMapper, CourseB
 
     @Override
     public PageResult<CourseBase> queryCourseBasePageList(PageParams pageParams, QueryCourseParamsDTO courseParamsDTO) {
+        //todo：机构ID 暂时使用硬编码
+        Long companyId = 1232141425L;
+
         LambdaQueryWrapper<CourseBase> queryWrapper = new LambdaQueryWrapper<>();
+        // 只能查询本机构的课程
+        queryWrapper.eq(CourseBase::getCompanyId, companyId);
         queryWrapper.like(StringUtils.isNotBlank(courseParamsDTO.getCourseName()),
                 CourseBase::getName, courseParamsDTO.getCourseName());
         queryWrapper.eq(StringUtils.isNotBlank(courseParamsDTO.getAuditStatus()),

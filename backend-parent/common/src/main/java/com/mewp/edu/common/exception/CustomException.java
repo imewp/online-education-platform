@@ -1,6 +1,8 @@
 package com.mewp.edu.common.exception;
 
 /**
+ * 自定义异常类
+ *
  * @author mewp
  * @version 1.0
  * @date 2023/8/19 15:56

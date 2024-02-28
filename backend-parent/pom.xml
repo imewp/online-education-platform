@@ -17,6 +17,7 @@
         <module>media</module>
         <module>message-sdk</module>
         <module>search</module>
+        <module>auth</module>
     </modules>
 
     <properties>
