@@ -112,7 +112,7 @@ public class CourseSearchServiceImpl implements CourseSearchService {
         try {
             searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
         } catch (IOException e) {
-            log.error("课程搜索异常：{}", e.getMessage());
+            log.error("课程搜索异常：{}", e.getMessage(), e);
             return new SearchPageResultDTO<>(new ArrayList<>(), 0, 0, 0);
         }
 
@@ -125,12 +125,9 @@ public class CourseSearchServiceImpl implements CourseSearchService {
         List<CourseIndex> list = new ArrayList<>();
 
         for (SearchHit hit : searchHits) {
-
+            // 获取文档source
             String sourceAsString = hit.getSourceAsString();
             CourseIndex courseIndex = JSON.parseObject(sourceAsString, CourseIndex.class);
-
-            //取出source
-            Map<String, Object> sourceAsMap = hit.getSourceAsMap();
 
             //课程id
             Long id = courseIndex.getId();
@@ -147,14 +144,12 @@ public class CourseSearchServiceImpl implements CourseSearchService {
                         stringBuffer.append(str.string());
                     }
                     name = stringBuffer.toString();
-
                 }
             }
             courseIndex.setId(id);
             courseIndex.setName(name);
 
             list.add(courseIndex);
-
         }
         SearchPageResultDTO<CourseIndex> pageResult = new SearchPageResultDTO<>(list, totalHits.value, pageNo, pageSize);
 
@@ -180,18 +175,24 @@ public class CourseSearchServiceImpl implements CourseSearchService {
                 .field("stName")
                 .size(100)
         );
-
     }
 
+    /**
+     * 根据聚合名称获取聚合结果
+     *
+     * @param aggregations 聚合对象
+     * @param aggName      聚合名称
+     * @return 聚合结果
+     */
     private List<String> getAggregation(Aggregations aggregations, String aggName) {
-        // 4.1.根据聚合名称获取聚合结果
+        // 根据聚合名称获取聚合结果
         Terms brandTerms = aggregations.get(aggName);
-        // 4.2.获取buckets
+        // 获取buckets
         List<? extends Terms.Bucket> buckets = brandTerms.getBuckets();
-        // 4.3.遍历
+        // 遍历
         List<String> brandList = new ArrayList<>();
         for (Terms.Bucket bucket : buckets) {
-            // 4.4.获取key
+            // 获取key
             String key = bucket.getKeyAsString();
             brandList.add(key);
         }
