@@ -52,7 +52,7 @@ public class MultipartSupportConfig {
         FileItem item = new DiskFileItemFactory().createItem("file", MediaType.MULTIPART_FORM_DATA_VALUE,
                 true, file.getName());
         try (FileInputStream fis = new FileInputStream(file);
-             OutputStream os = item.getOutputStream();) {
+             OutputStream os = item.getOutputStream()) {
             IOUtils.copy(fis, os);
         } catch (IOException e) {
             e.printStackTrace();

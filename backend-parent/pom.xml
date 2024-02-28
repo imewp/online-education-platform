@@ -16,6 +16,7 @@
         <module>gateway</module>
         <module>media</module>
         <module>message-sdk</module>
+        <module>search</module>
     </modules>
 
     <properties>
