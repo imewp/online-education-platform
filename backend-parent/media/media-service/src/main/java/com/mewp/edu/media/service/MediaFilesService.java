@@ -26,9 +26,12 @@ public interface MediaFilesService extends IService<MediaFiles> {
      * @param companyId     公司ID
      * @param fileParamsDTO 上传文件信息
      * @param localFilePath 文件磁盘路径
+     * @param folder        目录
+     * @param objectName    对象名
      * @return 文件信息
      */
-    UploadFileResultDTO uploadFile(Long companyId, UploadFileParamsDTO fileParamsDTO, String localFilePath);
+    UploadFileResultDTO uploadFile(Long companyId, UploadFileParamsDTO fileParamsDTO, String localFilePath,
+                                   String folder, String objectName);
 
     /**
      * 将文件信息添加到文件表

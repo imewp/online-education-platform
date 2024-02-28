@@ -1,11 +1,10 @@
 package com.mewp.edu.content.model.po;
 
-import java.time.LocalDateTime;
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
-import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -23,6 +22,7 @@ public class CoursePublish implements Serializable {
     /**
      * 主键
      */
+    @TableId(value = "id", type = IdType.INPUT)
     private Long id;
 
     /**

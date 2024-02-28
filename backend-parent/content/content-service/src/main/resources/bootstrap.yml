@@ -14,3 +14,7 @@ spring:
         group: backend-parent
         file-extension: yaml
         refresh-enabled: true
+        shared-configs:
+          - data-id: feign-${spring.profiles.active}.yaml
+            group: backend-common
+            refresh: true

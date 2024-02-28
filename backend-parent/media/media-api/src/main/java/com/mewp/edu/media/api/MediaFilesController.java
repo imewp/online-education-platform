@@ -9,13 +9,11 @@ import com.mewp.edu.media.model.po.MediaFiles;
 import com.mewp.edu.media.service.MediaFilesService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -47,9 +45,16 @@ public class MediaFilesController {
     }
 
     @ApiOperation("上传普通文件")
-    @ApiImplicitParam(name = "filedata", value = "文件", required = true, dataType = "file")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "filedata", value = "文件", required = true, dataType = "file"),
+            @ApiImplicitParam(name = "folder", value = "目录", dataType = "string"),
+            @ApiImplicitParam(name = "objectName", value = "对象名", dataType = "string")
+    })
     @PostMapping(value = "/upload/coursefile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public UploadFileResultDTO upload(@RequestPart("filedata") MultipartFile upload) throws IOException {
+    public UploadFileResultDTO upload(@RequestPart("filedata") MultipartFile upload,
+                                      @RequestParam(value = "folder", required = false) String folder,
+                                      @RequestParam(value = "objectName", required = false) String objectName)
+            throws IOException {
         Long companyId = 1232141425L;
         UploadFileParamsDTO fileParamsDTO = new UploadFileParamsDTO();
         //文件大小
@@ -72,6 +77,6 @@ public class MediaFilesController {
         //文件路径
         String absolutePath = tempFile.getAbsolutePath();
         //上传文件
-        return mediaFilesService.uploadFile(companyId, fileParamsDTO, absolutePath);
+        return mediaFilesService.uploadFile(companyId, fileParamsDTO, absolutePath, folder, objectName);
     }
 }

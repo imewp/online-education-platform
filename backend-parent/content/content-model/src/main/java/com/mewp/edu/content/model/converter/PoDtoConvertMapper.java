@@ -33,5 +33,9 @@ public interface PoDtoConvertMapper {
     Teachplan teachPlanDto2Po(AddOrUpdateTeachPlanDTO teacherDto);
 
     CourseTeacher courseTeacherDto2Vo(AddOrUpdateCourseTeacherDTO teacherDto);
+
+    CoursePublishPre courseBaseDto2CoursePublishPrePo(CourseBaseInfoDTO courseBaseInfoDto);
+
+    CoursePublish coursePublishPrePo2CoursePublishPo(CoursePublishPre coursePublishPre);
 }
 

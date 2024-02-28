@@ -10,6 +10,7 @@ import com.mewp.edu.common.model.PageResult;
 import com.mewp.edu.common.model.ResponseResult;
 import com.mewp.edu.common.param.PageParams;
 import com.mewp.edu.common.utils.DateUtil;
+import com.mewp.edu.common.utils.StringUtil;
 import com.mewp.edu.media.mapper.MediaFilesMapper;
 import com.mewp.edu.media.mapper.MediaProcessMapper;
 import com.mewp.edu.media.model.converter.PoDtoConvertMapper;
@@ -84,7 +85,8 @@ public class MediaFilesServiceImpl extends ServiceImpl<MediaFilesMapper, MediaFi
     }
 
     @Override
-    public UploadFileResultDTO uploadFile(Long companyId, UploadFileParamsDTO fileParamsDTO, String localFilePath) {
+    public UploadFileResultDTO uploadFile(Long companyId, UploadFileParamsDTO fileParamsDTO, String localFilePath,
+                                          String folder, String objectName) {
         //@Transactional添加在该方法时，如果上传文件过程时间较长那么数据库的事务持续时间就会变长，这样数据库连接释放就慢，最终导致数据库连接不够用。
         File file = new File(localFilePath);
         if (!file.exists()) {
@@ -98,10 +100,20 @@ public class MediaFilesServiceImpl extends ServiceImpl<MediaFilesMapper, MediaFi
         String mimeType = getMimeType(extension);
         //文件Md5值
         String fileMd5 = getFileMd5(file);
-        //文件的默认目录
-        String defaultFolderPath = getDefaultFolderPath();
+
         //存储到minio中的对象名（带目录）
-        String objectName = defaultFolderPath + fileMd5 + extension;
+        if (StringUtil.isBlank(folder)) {
+            //文件的默认目录
+            folder = getDefaultFolderPath();
+        } else if (!folder.endsWith("/")) {
+            // 如果目录末尾没有 / ，替他加一个
+            folder = folder + "/";
+        }
+        if (StringUtils.isEmpty(objectName)) {
+            objectName = fileMd5 + extension;
+        }
+        objectName = folder + objectName;
+
         //文件大小
         fileParamsDTO.setFileSize(file.length());
         //将文件上传到minio

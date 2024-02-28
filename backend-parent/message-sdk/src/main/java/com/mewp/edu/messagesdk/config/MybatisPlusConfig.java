@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
  * @version 1.0
  * @date 2024/2/24 16:22
  */
-@Configuration("messagesdk_mpconfig")
+@Configuration
 @MapperScan("com.mewp.edu.messagesdk.mapper")
 public class MybatisPlusConfig {
 }
