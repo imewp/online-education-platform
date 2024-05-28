@@ -16,4 +16,8 @@ POST {{auth_host}}/auth/oauth/check_token?
 ################ 扩展认证请求参数后
 ### 密码模式
 POST {{auth_host}}/auth/oauth/token?client_id=XcWebApp&client_secret=XcWebApp&grant_type=password&
-    username={"username":"stu1","authType":"password","password":"111111"}
+    username={"username":"stu1","password":"111111","checkcode":"hjqp","checkcodekey":"checkcode:e56ea8970a0645a6b418d8062e439d7c","authType":"password"}
+
+### 密码模式
+POST {{gateway_host}}/auth/oauth/token?client_id=XcWebApp&client_secret=XcWebApp&grant_type=password&
+    username={"username":"stu1","password":"111111","checkcode":"30QF","checkcodekey":"checkcode:cbcd56ccce5744639206a3b1a6fc1e5b","authType":"password"}

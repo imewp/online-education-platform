@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.mewp.edu.auth.ucenter.entity.dto.AuthParamsDTO;
 import com.mewp.edu.auth.ucenter.entity.dto.UserExtDTO;
 import com.mewp.edu.auth.ucenter.entity.po.XcUser;
+import com.mewp.edu.auth.ucenter.feignclient.CheckCodeClient;
 import com.mewp.edu.auth.ucenter.mapper.XcUserMapper;
 import com.mewp.edu.auth.ucenter.service.AuthService;
 import com.mewp.edu.common.exception.CustomException;
+import com.mewp.edu.common.utils.StringUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -14,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
+ * 账号密码认证
+ *
  * @author mewp
  * @version 1.0
  * @date 2024/5/27 21:37
@@ -24,9 +28,21 @@ import org.springframework.stereotype.Service;
 public class PasswordAuthServiceImpl implements AuthService {
     private XcUserMapper userMapper;
     private PasswordEncoder passwordEncoder;
+    private CheckCodeClient checkCodeClient;
 
     @Override
     public UserExtDTO execute(AuthParamsDTO authParams) {
+        // 校验验证码
+        String checkCode = authParams.getCheckcode();
+        String checkCodeKey = authParams.getCheckcodeKey();
+        if (StringUtil.isBlank(checkCode) || StringUtil.isBlank(checkCodeKey)) {
+            throw new CustomException("验证码为空");
+        }
+        Boolean verify = checkCodeClient.verify(checkCodeKey, checkCode);
+        if (!verify) {
+            throw new CustomException("验证码输入错误");
+        }
+
         String username = authParams.getUsername();
         XcUser user = userMapper.selectOne(
                 new LambdaQueryWrapper<XcUser>().eq(XcUser::getUsername, username));

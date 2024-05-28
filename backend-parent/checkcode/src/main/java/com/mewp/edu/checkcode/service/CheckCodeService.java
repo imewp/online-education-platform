@@ -31,7 +31,7 @@ public interface CheckCodeService {
     /**
      * 验证码生成器
      */
-    public interface CheckCodeGenerator {
+    interface CheckCodeGenerator {
         /**
          * 验证码生成
          *
@@ -44,7 +44,7 @@ public interface CheckCodeService {
     /**
      * key生成器
      */
-    public interface KeyGenerator {
+    interface KeyGenerator {
         /**
          * key生成
          *
@@ -57,7 +57,7 @@ public interface CheckCodeService {
     /**
      * 验证码存储
      */
-    public interface CheckCodeStore {
+    interface CheckCodeStore {
         /**
          * 向缓存设置key
          *

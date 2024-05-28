@@ -1,4 +1,4 @@
-package com.mewp.edu.content.config;
+package com.mewp.edu.media.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
