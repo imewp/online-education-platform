@@ -19,5 +19,8 @@ public enum CommonError {
     QUERY_NULL("查询结果为空"),
     REQUEST_NULL("请求参数为空");
 
+    /**
+     * 错误描述
+     */
     private final String errMessage;
 }

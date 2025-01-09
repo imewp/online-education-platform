@@ -67,6 +67,12 @@ public class CommonUtil {
         return bd;
     }
 
+    /**
+     * 将时间字符串转换为秒数。
+     *
+     * @param timeStr 时间字符串
+     * @return 转换后的秒数
+     */
     public static Long timeStrToSeconds(String timeStr) {
         if (StringUtils.isBlank(timeStr)) {
             return 0L;
