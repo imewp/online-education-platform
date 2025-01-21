@@ -33,8 +33,16 @@ public class HttpUtil {
         JSON.writeJSONString(response.getOutputStream(), restResponse);
     }
 
+    /**
+     * 获取token
+     *
+     * @param ak API Key
+     * @param sk Secret Key
+     * @return token
+     * @throws Exception 异常信息
+     */
     public static String getAccessToken(String ak, String sk) throws Exception {
-        // 获取token地址
+        // 获取 token 地址
         String authHost = "https://aip.baidubce.com/oauth/2.0/token?";
         String getAccessTokenUrl = authHost
                 // 1. grant_type为固定参数
@@ -68,12 +76,31 @@ public class HttpUtil {
         return resultMap.get("access_token").toString();
     }
 
+    /**
+     * 发送POST请求并返回URL的响应结果
+     *
+     * @param requestUrl  URL地址
+     * @param accessToken 访问令牌
+     * @param params      参数
+     * @return 响应结果的字符串形式
+     * @throws Exception 异常信息
+     */
     public static String post(String requestUrl, String accessToken, String params)
             throws Exception {
         String contentType = "application/x-www-form-urlencoded";
         return HttpUtil.post(requestUrl, accessToken, contentType, params);
     }
 
+    /**
+     * 发送POST请求并返回URL的响应结果
+     *
+     * @param requestUrl  URL地址
+     * @param accessToken 访问令牌
+     * @param contentType 内容类型
+     * @param params      参数
+     * @return 响应结果的字符串形式
+     * @throws Exception 异常信息
+     */
     public static String post(String requestUrl, String accessToken, String contentType, String params)
             throws Exception {
         String encoding = "UTF-8";
@@ -83,6 +110,17 @@ public class HttpUtil {
         return HttpUtil.post(requestUrl, accessToken, contentType, params, encoding);
     }
 
+    /**
+     * 发送POST请求并返回URL的响应结果
+     *
+     * @param requestUrl  URL地址
+     * @param accessToken 访问令牌
+     * @param contentType 内容类型
+     * @param params      参数
+     * @param encoding    编码格式
+     * @return 响应结果的字符串形式
+     * @throws Exception 异常信息
+     */
     public static String post(String requestUrl, String accessToken, String contentType, String params, String encoding)
             throws Exception {
         String url = requestUrl + "?access_token=" + accessToken;

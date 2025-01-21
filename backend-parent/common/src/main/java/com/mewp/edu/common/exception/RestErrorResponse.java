@@ -10,6 +10,9 @@ import java.io.Serializable;
  * @date 2023/8/19 16:03
  */
 public class RestErrorResponse implements Serializable {
+    /**
+     * 错误描述
+     */
     private String errorMessage;
 
     public RestErrorResponse(String errorMessage) {

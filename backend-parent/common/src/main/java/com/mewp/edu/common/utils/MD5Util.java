@@ -8,6 +8,8 @@ import java.security.NoSuchAlgorithmException;
 
 
 /**
+ * MD5加密工具类
+ *
  * @author mewp
  */
 @Slf4j

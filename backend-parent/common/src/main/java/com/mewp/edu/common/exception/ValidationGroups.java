@@ -8,10 +8,21 @@ package com.mewp.edu.common.exception;
  * @date 2023/8/27 12:53
  */
 public class ValidationGroups {
+    /**
+     * 新增
+     */
+    public interface Insert {
+    }
 
-    public interface Insert{}
+    /**
+     * 更新
+     */
+    public interface Update {
+    }
 
-    public interface Update{}
-
-    public interface Delete{}
+    /**
+     * 删除
+     */
+    public interface Delete {
+    }
 }

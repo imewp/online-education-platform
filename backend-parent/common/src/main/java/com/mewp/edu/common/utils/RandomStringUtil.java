@@ -32,6 +32,8 @@ public class RandomStringUtil {
                 case 2:
                     sb.append(new Random().nextInt(10));
                     break;
+                default:
+                    break;
             }
         }
         return sb.toString();

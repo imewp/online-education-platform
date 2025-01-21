@@ -7,6 +7,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * 字符串工具类
+ *
  * @author mewp
  */
 public class StringUtil {
@@ -182,6 +184,7 @@ public class StringUtil {
     /**
      * 创建StringBuilder对象
      *
+     * @param capacity 初始大小
      * @return StringBuilder对象
      */
     public static StringBuilder builder(int capacity) {
@@ -191,6 +194,7 @@ public class StringUtil {
     /**
      * 创建StringBuilder对象
      *
+     * @param strs 字符串数组
      * @return StringBuilder对象
      */
     public static StringBuilder builder(String... strs) {
@@ -264,9 +268,8 @@ public class StringUtil {
      * @return 如果文件后缀 jpg
      */
     public static String getFileExt(String src) {
-
-        String filename = src.substring(src.lastIndexOf(File.separator) + 1);// 获取到文件名
-
+        // 获取到文件名
+        String filename = src.substring(src.lastIndexOf(File.separator) + 1);
         return filename.substring(filename.lastIndexOf(".") + 1);
     }
 
@@ -277,8 +280,8 @@ public class StringUtil {
      * @return 文件名称 不带文件后缀 test
      */
     public static String getFileName(String src) {
-
-        String filename = src.substring(src.lastIndexOf(File.separator) + 1);// 获取到文件名
+        // 获取到文件名
+        String filename = src.substring(src.lastIndexOf(File.separator) + 1);
 
         return filename.substring(0, filename.lastIndexOf("."));
     }

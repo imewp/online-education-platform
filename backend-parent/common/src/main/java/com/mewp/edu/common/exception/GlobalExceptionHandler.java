@@ -30,7 +30,12 @@ import java.util.Set;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
+    /**
+     * 业务异常
+     *
+     * @param e 自定义异常
+     * @return 异常信息
+     */
     @ExceptionHandler(CustomException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public RestErrorResponse customException(CustomException e) {
@@ -44,6 +49,12 @@ public class GlobalExceptionHandler {
         return new RestErrorResponse(e.getErrMessage());
     }
 
+    /**
+     * 参数校验异常
+     *
+     * @param e 参数校验异常
+     * @return 异常信息
+     */
     @ExceptionHandler({MissingServletRequestParameterException.class, ConstraintViolationException.class,
             BindException.class, MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -84,11 +95,19 @@ public class GlobalExceptionHandler {
         return new RestErrorResponse(msg);
     }
 
-
+    /**
+     * 全局异常
+     *
+     * @param e 异常
+     * @return 异常信息
+     */
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public RestErrorResponse exception(Exception e) {
         log.error("系统异常：{}", e.getMessage(), e);
+        if ("不允许访问".equals(e.getMessage())) {
+            return new RestErrorResponse("没有操作此功能的权限");
+        }
         //解析异常信息
         return new RestErrorResponse(CommonError.UNKNOWN_ERROR.getErrMessage());
     }

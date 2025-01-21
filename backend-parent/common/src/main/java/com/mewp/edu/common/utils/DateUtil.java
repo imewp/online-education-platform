@@ -388,7 +388,10 @@ public class DateUtil {
     }
 
     /**
-     * 功能：获取指定月份的第一天<br/>
+     * 获取指定月份的第一天
+     *
+     * @param month 月份
+     * @return 日期
      */
     public static String getStartDayWithMonth(String month) throws ParseException {
         Calendar calendar = new GregorianCalendar();
@@ -402,7 +405,10 @@ public class DateUtil {
     }
 
     /**
-     * 功能：获取指定月份的最后一天<br/>
+     * 获取指定月份的最后一天
+     *
+     * @param month 月份
+     * @return 日期
      */
     public static String getEndDayWithMonth(String month) throws ParseException {
         Calendar calendar = new GregorianCalendar();
@@ -415,19 +421,30 @@ public class DateUtil {
         return sdf.format(calendar.getTime());
     }
 
+
+    /**
+     * 格式化日期字符串为（年-月-日）
+     *
+     * @param dateStr 日期字符串，应符合"yyyy-MM-dd"格式
+     * @return 格式化后的日期字符串如果输入为空则返回空字符串
+     * @throws ParseException 如果日期字符串格式不正确，无法解析
+     */
     public static String formatYearMonthDay(String dateStr) throws ParseException {
+        // 检查日期字符串是否非空
         if (StringUtils.isNotBlank(dateStr)) {
             SimpleDateFormat sdf = new SimpleDateFormat(YYYY_MM_DD_FORMAT);
             Date date = sdf.parse(dateStr);
             return sdf.format(date);
-        } else {
-            return "";
         }
+        // 如果日期字符串为空，返回空字符串
+        return "";
     }
 
     /**
-     * 功能：<br/>
      * 根据时间 yyyy-MM-dd 获取该日期是本月第几周
+     *
+     * @param dateStr 日期字符串
+     * @return 周数
      */
     public static int getWeekIndexOfMonth(String dateStr) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat(YYYY_MM_DD_FORMAT);
@@ -438,7 +455,10 @@ public class DateUtil {
     }
 
     /**
-     * 获取当前时间到指定时间距离多少秒 功能：<br/>
+     * 获取当前时间到指定时间距离多少秒
+     *
+     * @param designationTime 日期时间
+     * @return 秒数
      */
     public static int getSecondToDesignationTime(String designationTime) {
         // 24小时制
@@ -447,8 +467,8 @@ public class DateUtil {
         try {
             toDate = dateFormat.parse(designationTime);
             return (int) ((toDate.getTime() - dateFormat.parse(DateUtil.getCurrDateTimeStr()).getTime()) / 1000);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        } catch (ParseException ignore) {
+
         }
         return 0;
     }

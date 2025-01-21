@@ -6,11 +6,8 @@ import java.security.MessageDigest;
 import java.util.Objects;
 import java.util.Random;
 
-
 /**
- * <P>
  * MD5加盐加密
- * </p>
  *
  * @author mewp
  */
